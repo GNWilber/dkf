@@ -36,7 +36,7 @@ function buildUpcomingCopyText(upcomingMovies) {
   return upcomingMovies
     .map(m => {
       const name = displayName(m);
-      return `### ${m.date}: [*${name} [${m.year}]*](${m.filmweb})`;
+      return `${m.date}: [*${name} [${m.year}]*](${m.filmweb})`;
     })
     .join("  \n") + "  \n";
 }
@@ -48,7 +48,7 @@ function buildArchiveCopyText(archiveMovies, globalIndexMap) {
     .map(m => {
       const num = globalIndexMap.get(m);
       const name = displayName(m);
-      return `## ${num}. ${m.date}: ${name} [${m.year}]`;
+      return `${num}. ${m.date}: ${name} [${m.year}]`;
     })
     .join("\n");
 }
