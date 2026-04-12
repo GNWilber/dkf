@@ -114,7 +114,7 @@ function buildCard(movie) {
       <span class="date-day">${day}</span>
       <div class="date-gap"></div>
       <span class="date-month-year">${monthFull} ${year}</span>
-      ${isToday ? '<span class="badge-today">Dziś!</span>' : ""}
+      ${isToday ? '<span class="badge-today">‎ Dziś!</span>' : ""}
     </div>
     <div class="card-divider"></div>
     <div class="card-info">
