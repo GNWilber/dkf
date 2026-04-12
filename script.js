@@ -36,7 +36,7 @@ function buildUpcomingCopyText(upcomingMovies) {
   return upcomingMovies
     .map(m => {
       const name = displayName(m);
-      return `${m.date}: [*${name} [${m.year}]*](${m.filmweb})`;
+      return `### ${m.date}: [*${name} [${m.year}]*](${m.filmweb})`;
     })
     .join("  \n") + "  \n";
 }
