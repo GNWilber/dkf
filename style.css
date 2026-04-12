@@ -557,3 +557,123 @@ footer {
   color: var(--cream);
   text-shadow: 0 0 20px rgba(240, 232, 216, 0.55);
 }
+
+/* ============================================================
+   DRIVE CARD – cały kafelek jest linkiem
+   ============================================================ */
+
+.download-section .cards-grid {
+  justify-content: center;
+}
+
+.drive-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  width: 320px;
+  text-decoration: none;            /* usuwa podkreślenie linku */
+  color: inherit;                   /* dziedziczy kolor tekstu */
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  animation: fadeInUp 0.5s ease both;
+}
+
+.drive-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.drive-card:hover {
+  border-color: var(--border-h);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 0 1px var(--border-h);
+  background: var(--bg-card-h);
+}
+
+.drive-card:hover::after {
+  opacity: 1;
+}
+
+.card-icon {
+  padding: 2.2rem 0 1rem;
+}
+
+.drive-icon-large {
+  width: 3.8rem;
+  height: 3.8rem;
+  filter: drop-shadow(0 0 6px rgba(212, 168, 76, 0.3));
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+.drive-card:hover .drive-icon-large {
+  filter: drop-shadow(0 0 12px rgba(212, 168, 76, 0.5));
+  transform: scale(1.05);
+}
+
+.drive-title {
+  font-family: 'Product Sans', 'Google Sans', 'Poppins', var(--font-body), sans-serif;
+  font-weight: 400;
+  font-size: 1.9rem;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.drive-desc {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+}
+
+.drive-link-text {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.1rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  border-top: 1px solid var(--border);
+  transition: color 0.2s ease, background 0.2s ease;
+  margin-top: auto;
+}
+
+.drive-card:hover .drive-link-text {
+  color: var(--gold);
+  background: rgba(212,168,76,0.06);
+}
+
+.link-arrow {
+  font-size: 1.1em;
+  transition: transform 0.2s ease;
+}
+
+.drive-card:hover .link-arrow {
+  transform: translateX(4px);
+}
+
+/* Ukryj stare style, jeśli zostały */
+.download-body {
+  display: none;
+}
