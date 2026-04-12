@@ -1,44 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sleep Request</title>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #1a1a1a;
-      color: #ffffff;
-      font-family: 'Ubuntu', sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-
-    .center-text {
-      text-align: center;
-      font-size: clamp(24px, 10vw, 100px);
-      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      max-width: 90%;
-      word-wrap: break-word;
-    }
-
-    iframe {
-      border-radius: 12px;
-      margin: 20px; /* Added margins around the iframe */
-      width: calc(100% - 40px); /* Adjust width to account for horizontal margins */
-      max-width: 1500px; /* Optional: limits iframe width on larger screens */
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dyskusyjny Klub Filmowy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="center-text">Sleep Request</div>
-  <iframe src="https://open.spotify.com/embed/track/4dYME2vEklDwBIYYxZ1tRx?utm_source=generator&theme=0" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+  <div class="grain-overlay"></div>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-logo">
+        <span class="logo-dkf">DKF</span>
+        <div class="logo-text">
+          <span class="logo-full">Dyskusyjny</span>
+          <span class="logo-full">Klub Filmowy</span>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span id="current-date-display"></span>
+        <span class="separator">·</span>
+        <span>Warszawa</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="upcoming-section">
+      <div class="section-label">
+        <span class="label-line"></span>
+        <span class="label-text">Nadchodzące spotkania</span>
+        <span class="label-line"></span>
+      </div>
+      <div class="cards-grid" id="upcoming-cards">
+        <!-- Dynamically populated -->
+      </div>
+      <div class="empty-state hidden" id="upcoming-empty">
+        <p>Brak zaplanowanych seansów. Wróć wkrótce.</p>
+      </div>
+    </section>
+
+    <section class="archive-section">
+      <div class="section-label">
+        <span class="label-line"></span>
+        <span class="label-text">Już dyskutowaliśmy</span>
+        <span class="label-line"></span>
+      </div>
+      <ul class="archive-list" id="archive-list">
+        <!-- Dynamically populated -->
+      </ul>
+      <div class="empty-state hidden" id="archive-empty">
+        <p>Brak omówionych filmów.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Dyskusyjny Klub Filmowy &mdash; Kino, które łączy.</p>
+  </footer>
+
+  <script src="movies.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
