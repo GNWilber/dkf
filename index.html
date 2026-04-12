@@ -17,15 +17,10 @@
     <div class="header-inner">
       <div class="header-logo">
         <span class="logo-dkf">DKF</span>
+        <div class="logo-divider"></div>
         <div class="logo-text">
-          <span class="logo-full">Dyskusyjny</span>
-          <span class="logo-full">Klub Filmowy</span>
+          <span class="logo-full">Dyskusyjny Klub Filmowy</span>
         </div>
-      </div>
-      <div class="header-meta">
-        <span id="current-date-display"></span>
-        <span class="separator">·</span>
-        <span>Warszawa</span>
       </div>
     </div>
   </header>
@@ -34,7 +29,7 @@
     <section class="upcoming-section">
       <div class="section-label">
         <span class="label-line"></span>
-        <span class="label-text">Nadchodzące spotkania</span>
+        <span class="label-text" id="label-upcoming" title="Kliknij, aby skopiować do schowka">Nadchodzące spotkania</span>
         <span class="label-line"></span>
       </div>
       <div class="cards-grid" id="upcoming-cards">
@@ -48,12 +43,10 @@
     <section class="archive-section">
       <div class="section-label">
         <span class="label-line"></span>
-        <span class="label-text">Już dyskutowaliśmy</span>
+        <span class="label-text" id="label-archive" title="Kliknij, aby skopiować do schowka">Już dyskutowaliśmy</span>
         <span class="label-line"></span>
       </div>
-      <ul class="archive-list" id="archive-list">
-        <!-- Dynamically populated -->
-      </ul>
+      <ul class="archive-list" id="archive-list"></ul>
       <div class="empty-state hidden" id="archive-empty">
         <p>Brak omówionych filmów.</p>
       </div>
