@@ -130,12 +130,19 @@ const MOVIES = [
     year: 1994,
     filmweb: "https://www.filmweb.pl/film/Forrest+Gump-1994-998",
     date: "17.04.2026"
-  },      
+  },
+  {
+    name: "Penguin's Memory: Shiawase monogatari",
+    altName: "",
+    year: 1985,
+    filmweb: "https://www.filmweb.pl/film/Penguin's+Memory+Shiawase+monogatari-1985-557033",
+    date: "24.04.2026"
+  },
   {
     name: "Big Lebowski",
     altName: "",
     year: 1998,
     filmweb: "https://www.filmweb.pl/film/Big+Lebowski-1998-13",
-    date: "24.04.2026"
+    date: "01.05.2026"
   },                      
 ];
