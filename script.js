@@ -132,6 +132,17 @@ function buildCard(movie) {
     </a>
   `;
 
+  // Zatrzymaj propagację kliknięcia na linku Filmweb, aby nie kopiować
+  const link = card.querySelector('.card-link');
+  link.addEventListener('click', (e) => e.stopPropagation());
+
+  // Kliknięcie w dowolne miejsce karty kopiuje nazwę filmu
+  card.addEventListener('click', () => {
+    const display = displayName(movie);          // np. "Incepcja (Inception)"
+    const copyText = `${display} [${movie.year}]`;
+    copyToClipboard(copyText, `✓ Skopiowano: ${copyText}`);
+  });
+
   return card;
 }
 
