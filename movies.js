@@ -148,7 +148,7 @@ const MOVIES = [
   {
     name: "Summer Wars",
     altName: "",
-    year: 1998,
+    year: 2009,
     filmweb: "https://www.filmweb.pl/film/Summer+Wars-2009-507454",
     date: "22.05.2026"
   },  
