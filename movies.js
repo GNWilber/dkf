@@ -145,4 +145,11 @@ const MOVIES = [
     filmweb: "https://www.filmweb.pl/film/Big+Lebowski-1998-13",
     date: "01.05.2026"
   },   
+  {
+    name: "Summer Wars",
+    altName: "",
+    year: 1998,
+    filmweb: "https://www.filmweb.pl/film/Summer+Wars-2009-507454",
+    date: "22.05.2026"
+  },  
 ];
