@@ -722,7 +722,8 @@ footer.toast-active .footer-content {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold);
-  white-space: nowrap;
+  white-space: pre-line;
+  text-align: center;
 }
 
 footer.toast-active .footer-toast-msg {
@@ -752,8 +753,9 @@ footer.toast-active .footer-toast-msg {
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
   z-index: 9999;
-  white-space: nowrap;
+  white-space: pre-line;
   pointer-events: none;
+  text-align: center;
 }
 
 .copy-toast.visible {

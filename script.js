@@ -165,7 +165,7 @@ function buildCard(movie) {
   // Clicking anywhere else copies the title
   card.addEventListener("click", () => {
     const text = `${displayName(movie)} [${movie.year}]`;
-    copyToClipboard(text, `Skopiowano — ${displayName(movie)} [${movie.year}]`);
+    copyToClipboard(text, `Skopiowano\n${displayName(movie)} [${movie.year}]`);
   });
 
   return card;
@@ -203,7 +203,7 @@ function buildArchiveItem(movie, globalNum) {
   // Clicking the row copies the title
   li.addEventListener("click", () => {
     const text = `${displayName(movie)} [${movie.year}]`;
-    copyToClipboard(text, `Skopiowano — ${displayName(movie)} [${movie.year}]`);
+    copyToClipboard(text, `Skopiowano\n${displayName(movie)} [${movie.year}]`);
   });
 
   return li;
@@ -301,7 +301,7 @@ function render() {
     const count = upcomingMovies.length;
     copyToClipboard(
       text,
-      `Plan spotkań skopiowany — ${count} ${count === 1 ? "seans" : "seanse"}`
+      `Plan spotkań skopiowany\n${count} ${count === 1 ? "seans" : "seanse"}`
     );
   });
 
@@ -310,7 +310,7 @@ function render() {
     const text = buildArchiveCopyText(archiveMovies, globalIndexMap);
     copyToClipboard(
       text,
-      `Archiwum skopiowane — ${archiveMovies.length} filmów`
+      `Archiwum skopiowane\n${archiveMovies.length} filmów`
     );
   });
 }
