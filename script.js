@@ -165,7 +165,7 @@ function buildCard(movie) {
   // Clicking anywhere else copies the title
   card.addEventListener("click", () => {
     const text = `${displayName(movie)} [${movie.year}]`;
-    copyToClipboard(text, `Skopiowano — ${movie.name} [${movie.year}]`);
+    copyToClipboard(text, `Skopiowano — ${displayName(movie)} [${movie.year}]`);
   });
 
   return card;
@@ -203,7 +203,7 @@ function buildArchiveItem(movie, globalNum) {
   // Clicking the row copies the title
   li.addEventListener("click", () => {
     const text = `${displayName(movie)} [${movie.year}]`;
-    copyToClipboard(text, `Skopiowano — ${movie.name} [${movie.year}]`);
+    copyToClipboard(text, `Skopiowano — ${displayName(movie)} [${movie.year}]`);
   });
 
   return li;
