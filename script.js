@@ -1,5 +1,5 @@
 // ============================================================
-//  LOGIKA STRONY
+//  DYSKUSYJNY KLUB FILMOWY — logika strony v5
 // ============================================================
 
 const POLISH_MONTHS = [
@@ -7,11 +7,14 @@ const POLISH_MONTHS = [
   "lipca", "sierpnia", "września", "października", "listopada", "grudnia"
 ];
 
+// ---- DATE HELPERS ----
+
 function parseDate(str) {
   const [d, m, y] = str.split(".").map(Number);
   return new Date(y, m - 1, d);
 }
 
+/** Upcoming = today or later (including yesterday for the card display buffer). */
 function isUpcoming(movieDate) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -20,17 +23,21 @@ function isUpcoming(movieDate) {
   return movieDate >= cutoff;
 }
 
-// Format date as DD.MM.YYYY
-function formatDate(dateStr) {
-  return dateStr; // already in correct format
+/** Returns the first movie that is today or in the future (strict). */
+function getNextMovie(sortedMovies) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return sortedMovies.find(m => parseDate(m.date) >= today) || null;
 }
 
-// Movie display name with optional altName
+// ---- DISPLAY HELPERS ----
+
+/** "Incepcja" or "Incepcja (Inception)" */
 function displayName(movie) {
   return movie.altName ? `${movie.name} (${movie.altName})` : movie.name;
 }
 
-// ---- COPY FORMATS ----
+// ---- COPY FORMAT BUILDERS ----
 
 function buildUpcomingCopyText(upcomingMovies) {
   return upcomingMovies
@@ -42,7 +49,6 @@ function buildUpcomingCopyText(upcomingMovies) {
 }
 
 function buildArchiveCopyText(archiveMovies, globalIndexMap) {
-  // show oldest first for the copy (ascending), each with global number
   return [...archiveMovies]
     .reverse()
     .map(m => {
@@ -53,9 +59,31 @@ function buildArchiveCopyText(archiveMovies, globalIndexMap) {
     .join("\n");
 }
 
-// ---- TOAST ----
+// ============================================================
+//  TOAST SYSTEM
+//  — when footer is present: slides over footer content
+//  — when no footer: classic floating toast from bottom
+// ============================================================
+
+let _toastTimer = null;
 
 function showToast(message) {
+  const footer = document.querySelector("footer");
+
+  if (footer) {
+    const toastMsg = footer.querySelector(".footer-toast-msg");
+    toastMsg.textContent = message;
+    footer.classList.add("toast-active");
+
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => {
+      footer.classList.remove("toast-active");
+    }, 2400);
+
+    return;
+  }
+
+  // ---- Floating fallback (no footer) ----
   const existing = document.getElementById("copy-toast");
   if (existing) existing.remove();
 
@@ -65,35 +93,36 @@ function showToast(message) {
   toast.textContent = message;
   document.body.appendChild(toast);
 
-  // force reflow to trigger transition
+  // Force reflow to trigger transition
   toast.getBoundingClientRect();
   toast.classList.add("visible");
 
-  setTimeout(() => {
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => {
     toast.classList.remove("visible");
     setTimeout(() => toast.remove(), 400);
-  }, 2200);
+  }, 2400);
 }
 
-async function copyToClipboard(text, successMsg) {
+async function copyToClipboard(text, toastMessage) {
   try {
     await navigator.clipboard.writeText(text);
-    showToast(successMsg);
   } catch {
-    // fallback
+    // Fallback for older browsers / non-HTTPS
     const ta = document.createElement("textarea");
     ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
+    ta.style.cssText = "position:fixed;opacity:0;pointer-events:none";
     document.body.appendChild(ta);
     ta.select();
     document.execCommand("copy");
     ta.remove();
-    showToast(successMsg);
   }
+  showToast(toastMessage);
 }
 
-// ---- CARD BUILDER ----
+// ============================================================
+//  CARD BUILDER
+// ============================================================
 
 function buildCard(movie) {
   const date = parseDate(movie.date);
@@ -107,7 +136,10 @@ function buildCard(movie) {
   const isPast  = date < today;
 
   const card = document.createElement("article");
-  card.className = "movie-card" + (isToday ? " is-today" : "") + (isPast ? " is-past" : "");
+  card.className =
+    "movie-card" +
+    (isToday ? " is-today" : "") +
+    (isPast   ? " is-past"  : "");
 
   card.innerHTML = `
     <div class="card-date">
@@ -122,31 +154,26 @@ function buildCard(movie) {
       ${movie.altName ? `<p class="card-alt">${movie.altName}</p>` : ""}
       <p class="card-year">${movie.year}</p>
     </div>
-    <a class="card-link" href="${movie.filmweb}" target="_blank" rel="noopener">
-      <span>Filmweb</span>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-        <polyline points="15 3 21 3 21 9"/>
-        <line x1="10" y1="14" x2="21" y2="3"/>
-      </svg>
+    <a class="card-link" href="${movie.filmweb}" target="_blank" rel="noopener" title="Otwórz na Filmweb">
+      <img src="filmwebfull.svg" alt="Filmweb" class="filmweb-logo-full" />
     </a>
   `;
 
-  // Zatrzymaj propagację kliknięcia na linku Filmweb, aby nie kopiować
-  const link = card.querySelector('.card-link');
-  link.addEventListener('click', (e) => e.stopPropagation());
+  // Filmweb link — open in new tab, don't trigger card copy
+  card.querySelector(".card-link").addEventListener("click", e => e.stopPropagation());
 
-  // Kliknięcie w dowolne miejsce karty kopiuje nazwę filmu
-  card.addEventListener('click', () => {
-    const display = displayName(movie);          // np. "Incepcja (Inception)"
-    const copyText = `${display} [${movie.year}]`;
-    copyToClipboard(copyText, `✓ Skopiowano: ${copyText}`);
+  // Clicking anywhere else copies the title
+  card.addEventListener("click", () => {
+    const text = `${displayName(movie)} [${movie.year}]`;
+    copyToClipboard(text, `Skopiowano — ${movie.name} [${movie.year}]`);
   });
 
   return card;
 }
 
-// ---- ARCHIVE ITEM (numbered) ----
+// ============================================================
+//  ARCHIVE ITEM BUILDER
+// ============================================================
 
 function buildArchiveItem(movie, globalNum) {
   const date = parseDate(movie.date);
@@ -165,24 +192,83 @@ function buildArchiveItem(movie, globalNum) {
       ${movie.altName ? `<span class="archive-alt">/ ${movie.altName}</span>` : ""}
       <span class="archive-year">(${movie.year})</span>
     </span>
-    <a href="${movie.filmweb}" target="_blank" rel="noopener" class="archive-link" title="Filmweb">↗</a>
+    <a href="${movie.filmweb}" target="_blank" rel="noopener" class="archive-link" title="Otwórz na Filmweb">
+      <img src="filmweb.svg" alt="Filmweb" class="filmweb-logo-sq" />
+    </a>
   `;
+
+  // Filmweb link — open in new tab, don't trigger copy
+  li.querySelector(".archive-link").addEventListener("click", e => e.stopPropagation());
+
+  // Clicking the row copies the title
+  li.addEventListener("click", () => {
+    const text = `${displayName(movie)} [${movie.year}]`;
+    copyToClipboard(text, `Skopiowano — ${movie.name} [${movie.year}]`);
+  });
+
   return li;
 }
 
-// ---- MAIN RENDER ----
+// ============================================================
+//  STICKY FOOTER — next upcoming movie
+// ============================================================
+
+function renderFooter(nextMovie) {
+  if (!nextMovie) return; // No footer when nothing is upcoming
+
+  const date = parseDate(nextMovie.date);
+  const day = date.getDate();
+  const monthFull = POLISH_MONTHS[date.getMonth()];
+  const year = date.getFullYear();
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const isToday = date.getTime() === today.getTime();
+
+  const footer = document.createElement("footer");
+  footer.innerHTML = `
+    <div class="footer-inner">
+      <div class="footer-content">
+        <span class="footer-label">${isToday ? "Dzisiejszy seans" : "Następny seans"}</span>
+        <div class="footer-divider"></div>
+        <div class="footer-meta">
+          <span class="footer-date">${day} ${monthFull} ${year}</span>
+          <span class="footer-sep">·</span>
+          <span class="footer-title">${nextMovie.name}</span>
+          ${nextMovie.altName ? `<span class="footer-alt">${nextMovie.altName}</span>` : ""}
+          <span class="footer-year">${nextMovie.year}</span>
+        </div>
+        <div class="footer-divider"></div>
+        <a class="footer-fw-link" href="${nextMovie.filmweb}" target="_blank" rel="noopener" title="Filmweb">
+          <img src="filmweb.svg" alt="Filmweb" class="footer-fw-icon" />
+        </a>
+      </div>
+      <div class="footer-toast-msg" aria-live="polite"></div>
+    </div>
+  `;
+
+  document.body.appendChild(footer);
+  document.body.classList.add("has-footer");
+}
+
+// ============================================================
+//  MAIN RENDER
+// ============================================================
 
 function render() {
   const sorted = [...MOVIES].sort((a, b) => parseDate(a.date) - parseDate(b.date));
 
-  // Global numbering: all movies sorted by date, 1-indexed
+  // Global index map: each movie → its position (1-indexed) in chronological order
   const globalIndexMap = new Map();
   sorted.forEach((m, i) => globalIndexMap.set(m, i + 1));
 
   const upcomingMovies = sorted.filter(m =>  isUpcoming(parseDate(m.date)));
-  const archiveMovies  = sorted.filter(m => !isUpcoming(parseDate(m.date))).reverse(); // newest first for display
+  const archiveMovies  = sorted.filter(m => !isUpcoming(parseDate(m.date))).reverse(); // newest first
 
-  // --- Upcoming cards ---
+  // ---- Sticky footer (next film, strictly today or future) ----
+  renderFooter(getNextMovie(sorted));
+
+  // ---- Upcoming cards ----
   const upcomingEl    = document.getElementById("upcoming-cards");
   const upcomingEmpty = document.getElementById("upcoming-empty");
 
@@ -196,7 +282,7 @@ function render() {
     });
   }
 
-  // --- Archive list (no pagination, numbered) ---
+  // ---- Archive list ----
   const archiveEl    = document.getElementById("archive-list");
   const archiveEmpty = document.getElementById("archive-empty");
 
@@ -208,17 +294,24 @@ function render() {
     });
   }
 
-  // --- Clickable labels ---
-  const upcomingLabel = document.getElementById("label-upcoming");
-  upcomingLabel.addEventListener("click", () => {
+  // ---- Clickable section labels ----
+  document.getElementById("label-upcoming").addEventListener("click", () => {
+    if (upcomingMovies.length === 0) return;
     const text = buildUpcomingCopyText(upcomingMovies);
-    copyToClipboard(text, "✓ Nadchodzące filmy skopiowane!");
+    const count = upcomingMovies.length;
+    copyToClipboard(
+      text,
+      `Plan spotkań skopiowany — ${count} ${count === 1 ? "seans" : "seanse"}`
+    );
   });
 
-  const archiveLabel = document.getElementById("label-archive");
-  archiveLabel.addEventListener("click", () => {
+  document.getElementById("label-archive").addEventListener("click", () => {
+    if (archiveMovies.length === 0) return;
     const text = buildArchiveCopyText(archiveMovies, globalIndexMap);
-    copyToClipboard(text, "✓ Lista omówionych filmów skopiowana!");
+    copyToClipboard(
+      text,
+      `Archiwum skopiowane — ${archiveMovies.length} filmów`
+    );
   });
 }
 
