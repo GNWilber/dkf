@@ -63,19 +63,23 @@
 
     <section class="archive-section">
       <div class="section-label section-label--toggle">
-        <span class="label-line"></span>
-        <span class="label-text label-toggle is-active" id="label-archive" data-mode="archive" title="Kliknij, aby skopiować do schowka">Poprzednie spotkania</span>
+        <div class="toggle-half toggle-half--left">
+          <span class="label-line"></span>
+          <span class="label-text label-toggle is-active" id="label-archive" data-mode="archive" title="Kliknij, aby skopiować do schowka">Spotkania</span>
+        </div>
         <span class="label-toggle-divider"></span>
-        <span class="label-text label-toggle" id="label-ranking" data-mode="ranking" title="Kliknij, aby przełączyć">Ranking</span>
-        <span class="label-line"></span>
+        <div class="toggle-half toggle-half--right">
+          <span class="label-text label-toggle" id="label-ranking" data-mode="ranking" title="Kliknij, aby przełączyć">Ranking</span>
+          <span class="label-line"></span>
+        </div>
       </div>
       <ul class="archive-list" id="archive-list"></ul>
       <div class="ranking-actions hidden" id="ranking-actions">
+        <p class="ranking-hint">Przeciągnij filmy, aby zmienić kolejność</p>
         <button class="ranking-copy-btn" id="ranking-copy-btn" type="button">
           <span class="ranking-copy-icon">⎘</span>
           <span>Skopiuj ranking</span>
         </button>
-        <p class="ranking-hint">Przeciągnij filmy, aby zmienić kolejność</p>
       </div>
       <div class="empty-state hidden" id="archive-empty">
         <p>Brak omówionych filmów.</p>

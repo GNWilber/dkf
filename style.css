@@ -188,7 +188,30 @@ main {
    SECTION LABEL TOGGLE (Archive | Ranking)
    ============================================================ */
 
-.section-label--toggle { gap: 1rem; }
+.section-label--toggle { gap: 1.5rem; }
+
+.label-toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.label-toggle-group .label-toggle:first-child {
+  flex: 1;
+  text-align: right;
+}
+.label-toggle-group .label-toggle:last-child {
+  flex: 1;
+  text-align: left;
+}
+
+.toggle-half {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.toggle-half--left  { justify-content: flex-end; }
+.toggle-half--right { justify-content: flex-start; }
 
 .label-toggle-divider {
   width: 1px;
@@ -513,7 +536,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
+  gap: 1.2rem;
   margin-top: 1.5rem;
 }
 
