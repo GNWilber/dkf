@@ -1,21 +1,26 @@
 /* ============================================================
-   DYSKUSYJNY KLUB FILMOWY — style v5
+   DYSKUSYJNY KLUB FILMOWY — style v6
    ============================================================ */
 
 :root {
-  --bg:          #0c0b09;
-  --bg-card:     #131210;
-  --bg-card-h:   #1e1a14;
-  --border:      #302a22;
-  --border-h:    #5a4a34;
-  --gold:        #d4a84c;
-  --gold-dim:    #8a6e38;
-  --gold-glow:   rgba(212, 168, 76, 0.14);
-  --cream:       #f0e8d8;
-  --muted:       #90806a;
-  --text:        #d4cabb;
-  --text-dim:    #665a4a;
-  --fw-red:      #E4261A;
+  --bg:            #0c0b09;
+  --bg-card:       #131210;
+  --bg-card-h:     #1e1a14;
+  --border:        #302a22;
+  --border-h:      #5a4a34;
+  --gold:          #d4a84c;
+  --gold-dim:      #8a6e38;
+  --gold-glow:     rgba(212, 168, 76, 0.14);
+  --cream:         #f0e8d8;
+  --muted:         #90806a;
+  --text:          #d4cabb;
+  --text-dim:      #665a4a;
+  --fw-red:        #E4261A;
+
+  /* Section labels — slightly brighter than before; inactive tabs use the dim shade */
+  --label-color:    #b48a48;
+  --label-inactive: #6e572d;
+
   --font-display: 'Playfair Display', Georgia, serif;
   --font-mono:    'DM Mono', 'Courier New', monospace;
   --font-body:    'Barlow', system-ui, sans-serif;
@@ -33,13 +38,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Extra bottom space when sticky footer is present */
 body.has-footer main {
   padding-bottom: calc(clamp(3rem, 6vw, 5rem) + 76px) !important;
 }
 
 /* ============================================================
-   GRAIN OVERLAY
+   GRAIN
    ============================================================ */
 
 .grain-overlay {
@@ -86,11 +90,7 @@ header {
   line-height: 1;
 }
 
-.logo-divider {
-  width: 1px;
-  height: 2rem;
-  background: var(--border-h);
-}
+.logo-divider { width: 1px; height: 2rem; background: var(--border-h); }
 
 .logo-full {
   font-family: var(--font-mono);
@@ -115,7 +115,7 @@ main {
 }
 
 /* ============================================================
-   SECTION LABELS — clickable, glowing on hover
+   SECTION LABELS
    ============================================================ */
 
 .section-label {
@@ -132,7 +132,7 @@ main {
   font-size: 0.72rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--label-color);
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
@@ -142,7 +142,6 @@ main {
   transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 
-/* clipboard hint underline */
 .label-text::after {
   content: '';
   position: absolute;
@@ -150,12 +149,11 @@ main {
   left: 0.8em;
   right: 0.8em;
   height: 1px;
-  background: var(--gold-dim);
+  background: currentColor;
   opacity: 0;
   transition: opacity 0.25s ease;
 }
 
-/* clipboard icon — shown for copy-action labels, hidden for real links */
 .label-text::before {
   content: '⎘';
   font-size: 0.8em;
@@ -164,32 +162,71 @@ main {
   transition: opacity 0.25s ease;
 }
 
-/* Download section label is a real <a> link — show arrow, not clipboard */
-.label-link {
-  text-decoration: none;
-  display: inline-block;
-}
+.label-link { text-decoration: none; display: inline-block; }
 .label-link::before { content: '↗'; }
 
-.section-label:hover .label-text {
+/* Hover rules for NON-toggle labels (parent-driven glow) */
+.section-label:not(.section-label--toggle):hover .label-text {
   color: var(--gold);
   text-shadow:
     0 0 12px rgba(212, 168, 76, 0.7),
     0 0 30px rgba(212, 168, 76, 0.35),
     0 0 60px rgba(212, 168, 76, 0.15);
 }
+.section-label:not(.section-label--toggle):hover .label-text::after  { opacity: 1; }
+.section-label:not(.section-label--toggle):hover .label-text::before { opacity: 0.7; }
 
-.section-label:hover .label-text::after { opacity: 1; }
-.section-label:hover .label-text::before { opacity: 0.7; }
+/* Lines react to any section hover */
 .section-label:hover .label-line { background: var(--border-h); }
 
-.section-label:active .label-text {
+.section-label:not(.section-label--toggle):active .label-text {
   color: var(--cream);
   text-shadow: 0 0 20px rgba(240, 232, 216, 0.6);
 }
 
 /* ============================================================
-   CARDS GRID
+   SECTION LABEL TOGGLE (Archive | Ranking)
+   ============================================================ */
+
+.section-label--toggle { gap: 1rem; }
+
+.label-toggle-divider {
+  width: 1px;
+  height: 1.05rem;
+  background: var(--border-h);
+  flex-shrink: 0;
+}
+
+/* Inactive tab — darker, no clipboard hint */
+.section-label--toggle .label-toggle:not(.is-active) {
+  color: var(--label-inactive);
+}
+.section-label--toggle .label-toggle:not(.is-active)::before { content: ''; margin-right: 0; }
+.section-label--toggle .label-toggle:not(.is-active)::after  { display: none; }
+
+.section-label--toggle .label-toggle:not(.is-active):hover {
+  color: var(--label-color);
+  text-shadow: 0 0 8px rgba(212, 168, 76, 0.25);
+}
+
+/* Active tab — full glow on hover */
+.section-label--toggle .label-toggle.is-active:hover {
+  color: var(--gold);
+  text-shadow:
+    0 0 12px rgba(212, 168, 76, 0.7),
+    0 0 30px rgba(212, 168, 76, 0.35),
+    0 0 60px rgba(212, 168, 76, 0.15);
+}
+.section-label--toggle .label-toggle.is-active:hover::after  { opacity: 1; }
+.section-label--toggle .label-toggle.is-active:hover::before { opacity: 0.7; }
+
+.section-label--toggle .label-toggle.is-active:active {
+  color: var(--cream);
+  text-shadow: 0 0 20px rgba(240, 232, 216, 0.6);
+}
+
+/* ============================================================
+   CARDS GRID + MOVIE CARD (unchanged)
    ============================================================ */
 
 .cards-grid {
@@ -198,10 +235,6 @@ main {
   gap: 2rem;
   justify-content: center;
 }
-
-/* ============================================================
-   MOVIE CARD
-   ============================================================ */
 
 .movie-card {
   background: var(--bg-card);
@@ -236,22 +269,17 @@ main {
   box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 0 1px var(--border-h);
   background: var(--bg-card-h);
 }
-
 .movie-card:hover::after { opacity: 1; }
 
 .movie-card.is-today {
   border-color: var(--gold-dim);
   box-shadow: 0 0 0 1px var(--gold-dim), 0 0 50px var(--gold-glow);
 }
-
 .movie-card.is-today::after {
   opacity: 1;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
-
 .movie-card.is-past { opacity: 0.72; }
-
-/* ---- Date block ---- */
 
 .card-date {
   width: 100%;
@@ -261,7 +289,6 @@ main {
   align-items: center;
   background: linear-gradient(180deg, rgba(212,168,76,0.06) 0%, transparent 100%);
 }
-
 .date-day {
   font-family: var(--font-display);
   font-size: 7rem;
@@ -270,9 +297,7 @@ main {
   line-height: 1;
   letter-spacing: -0.04em;
 }
-
 .date-gap { height: 0.9rem; }
-
 .date-month-year {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -281,7 +306,6 @@ main {
   text-transform: uppercase;
   line-height: 1;
 }
-
 .badge-today {
   display: inline-block;
   margin-top: 1rem;
@@ -295,14 +319,12 @@ main {
   border-radius: 1px;
   font-weight: 500;
 }
-
 .card-divider {
   width: calc(100% - 2.5rem);
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border-h), transparent);
   margin: 1.5rem 0 0;
 }
-
 .card-info {
   padding: 1.75rem 1.75rem 1.5rem;
   display: flex;
@@ -313,7 +335,6 @@ main {
   flex: 1;
   width: 100%;
 }
-
 .card-title {
   font-family: var(--font-display);
   font-size: 1.65rem;
@@ -322,14 +343,12 @@ main {
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
-
 .card-alt {
   font-family: var(--font-display);
   font-style: italic;
   font-size: 1.05rem;
   color: var(--muted);
 }
-
 .card-year {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -337,9 +356,6 @@ main {
   letter-spacing: 0.18em;
   margin-top: 0.3rem;
 }
-
-/* ---- Filmweb link at bottom of card ---- */
-
 .card-link {
   width: 100%;
   display: flex;
@@ -351,28 +367,23 @@ main {
   margin-top: auto;
   text-decoration: none;
 }
-
-.card-link:hover {
-  background: rgba(212,168,76,0.06);
-}
-
+.card-link:hover { background: rgba(212,168,76,0.06); }
 .filmweb-logo-full {
   height: 29px;
   width: auto;
   display: block;
   transition: transform 0.25s ease, filter 0.25s ease;
 }
-
 .card-link:hover .filmweb-logo-full {
   transform: scale(1.08);
   filter: drop-shadow(0 0 8px rgba(212, 169, 76, 0.368)) drop-shadow(0 0 24px rgba(212, 168, 76, 0.12));
 }
 
 /* ============================================================
-   ARCHIVE — numbered list
+   ARCHIVE / RANKING LIST
    ============================================================ */
 
-.archive-section { opacity: 0.88; }
+.archive-section { opacity: 0.92; }
 
 .archive-list {
   list-style: none;
@@ -388,8 +399,9 @@ main {
   gap: 1rem;
   padding: 1.1rem 1.6rem;
   border-bottom: 1px solid var(--border);
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
+  background: transparent;
 }
 
 .archive-item:last-child { border-bottom: none; }
@@ -425,11 +437,7 @@ main {
   font-weight: 400;
 }
 
-.archive-alt {
-  font-style: italic;
-  color: var(--muted);
-  margin-left: 0.4rem;
-}
+.archive-alt { font-style: italic; color: var(--muted); margin-left: 0.4rem; }
 
 .archive-year {
   font-family: var(--font-mono);
@@ -438,7 +446,6 @@ main {
   margin-left: 0.5rem;
 }
 
-/* Filmweb square logo in archive */
 .archive-link {
   display: flex;
   align-items: center;
@@ -459,13 +466,100 @@ main {
   filter: drop-shadow(0 0 8px rgba(212, 169, 76, 0.368)) drop-shadow(0 0 24px rgba(212, 168, 76, 0.12));
 }
 
+/* ---- Drag handle / draggable rows ---- */
+
+.archive-drag-handle {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--gold-dim);
+  letter-spacing: -0.1em;
+  cursor: grab;
+  user-select: none;
+  text-align: center;
+  opacity: 0.65;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.archive-item.is-draggable {
+  /* expand grid: handle, num, date, dot, title, link */
+  grid-template-columns: 1.5rem 2.5rem 175px auto 1fr auto;
+  cursor: grab;
+}
+
+.archive-item.is-draggable:hover .archive-drag-handle {
+  opacity: 1;
+  color: var(--gold);
+}
+
+.archive-item.is-draggable:active { cursor: grabbing; }
+
+.archive-item.dragging {
+  opacity: 0.4;
+  background: var(--bg-card-h);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+
+/* In ranking mode, highlight the rank number a bit more */
+.archive-section.is-ranking .archive-num {
+  color: var(--gold-dim);
+  font-weight: 500;
+}
+
 /* ============================================================
-   DOWNLOAD SECTION — Google Drive card
+   RANKING ACTIONS (copy button + hint)
    ============================================================ */
 
-.download-section .cards-grid {
-  justify-content: center;
+.ranking-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
 }
+
+.ranking-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.8em 1.8em;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--label-color);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease,
+              text-shadow 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.ranking-copy-btn:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(212, 168, 76, 0.05);
+  text-shadow: 0 0 12px rgba(212, 168, 76, 0.5);
+  box-shadow: 0 0 24px rgba(212, 168, 76, 0.12);
+}
+
+.ranking-copy-btn:active { transform: translateY(1px); }
+
+.ranking-copy-icon { font-size: 0.95em; }
+
+.ranking-hint {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   DOWNLOAD SECTION
+   ============================================================ */
+
+.download-section .cards-grid { justify-content: center; }
 
 .drive-card {
   display: flex;
@@ -504,12 +598,9 @@ main {
   box-shadow: 0 20px 60px rgba(0,0,0,0.65), 0 0 0 1px var(--border-h);
   background: var(--bg-card-h);
 }
-
 .drive-card:hover::after { opacity: 1; }
 
-.card-icon {
-  padding: 0;
-}
+.card-icon { padding: 0; }
 
 .drive-icon-large {
   width: 3.8rem;
@@ -546,39 +637,8 @@ main {
   color: var(--muted);
 }
 
-.drive-link-text {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1.1rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gold-dim);
-  border-top: 1px solid var(--border);
-  transition: color 0.2s ease, background 0.2s ease;
-  margin-top: auto;
-}
-
-.drive-card:hover .drive-link-text {
-  color: var(--gold);
-  background: rgba(212,168,76,0.06);
-}
-
-.link-arrow {
-  font-size: 1.1em;
-  transition: transform 0.2s ease;
-}
-
-.drive-card:hover .link-arrow {
-  transform: translateX(4px);
-}
-
 /* ============================================================
-   STICKY FOOTER — next upcoming movie (injected by JS)
+   STICKY FOOTER (unchanged)
    ============================================================ */
 
 footer {
@@ -593,7 +653,6 @@ footer {
   border-top: 1px solid var(--border);
   overflow: hidden;
 }
-
 .footer-inner {
   position: relative;
   max-width: 1100px;
@@ -601,7 +660,6 @@ footer {
   padding: 0 clamp(1.5rem, 5vw, 4rem);
   height: 100%;
 }
-
 .footer-content {
   display: flex;
   align-items: center;
@@ -610,7 +668,6 @@ footer {
   height: 100%;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
-
 .footer-label {
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -620,21 +677,18 @@ footer {
   white-space: nowrap;
   flex-shrink: 0;
 }
-
 .footer-divider {
   width: 1px;
   height: 2rem;
   background: var(--border-h);
   flex-shrink: 0;
 }
-
 .footer-meta {
   display: flex;
   align-items: center;
   gap: 0.65rem;
   min-width: 0;
 }
-
 .footer-date {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -643,13 +697,7 @@ footer {
   flex-shrink: 0;
   letter-spacing: 0.05em;
 }
-
-.footer-sep {
-  color: var(--border-h);
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
+.footer-sep { color: var(--border-h); font-size: 0.9rem; flex-shrink: 0; }
 .footer-title {
   font-family: var(--font-display);
   font-size: 1.05rem;
@@ -660,7 +708,6 @@ footer {
   text-overflow: ellipsis;
   min-width: 0;
 }
-
 .footer-alt {
   font-family: var(--font-display);
   font-style: italic;
@@ -669,7 +716,6 @@ footer {
   white-space: nowrap;
   flex-shrink: 0;
 }
-
 .footer-year {
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -678,7 +724,6 @@ footer {
   flex-shrink: 0;
   letter-spacing: 0.1em;
 }
-
 .footer-fw-link {
   display: flex;
   align-items: center;
@@ -687,19 +732,11 @@ footer {
   transition: transform 0.2s ease, filter 0.2s ease;
   border-radius: 4px;
 }
-
 .footer-fw-link:hover {
   transform: scale(1.1);
   filter: drop-shadow(0 0 8px rgba(212, 169, 76, 0.368)) drop-shadow(0 0 24px rgba(212, 168, 76, 0.12));
 }
-
-.footer-fw-icon {
-  width: 36px;
-  height: 36px;
-  display: block;
-}
-
-/* ---- Toast-in-footer ---- */
+.footer-fw-icon { width: 36px; height: 36px; display: block; }
 
 footer.toast-active .footer-content {
   opacity: 0;
@@ -732,7 +769,7 @@ footer.toast-active .footer-toast-msg {
 }
 
 /* ============================================================
-   TOAST — floating fallback (no footer present)
+   FLOATING TOAST
    ============================================================ */
 
 .copy-toast {
@@ -764,7 +801,7 @@ footer.toast-active .footer-toast-msg {
 }
 
 /* ============================================================
-   EMPTY STATE
+   EMPTY STATE / UTILITY
    ============================================================ */
 
 .empty-state {
@@ -778,17 +815,13 @@ footer.toast-active .footer-toast-msg {
 
 .hidden { display: none !important; }
 
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
-
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================================
-   FOOTER — ANNOUNCEMENT MODE
+   FOOTER ANNOUNCEMENT MODE
    ============================================================ */
 
 footer.footer--announcement {
@@ -844,7 +877,6 @@ footer.footer--announcement::before {
   letter-spacing: 0.01em;
 }
 
-/* On mobile, hide the announcement label & divider — keep only the text */
 @media (max-width: 640px) {
   .footer-announce-label { display: none; }
   .footer--announcement .footer-divider { display: none; }
@@ -874,14 +906,21 @@ footer.footer--announcement::before {
   .archive-title { grid-column: 2; grid-row: 1; }
   .archive-link  { grid-column: 3; grid-row: 1 / 3; align-self: center; }
 
-  /* Footer — compact on mobile */
+  .archive-item.is-draggable {
+    grid-template-columns: 1.25rem 2rem 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .archive-item.is-draggable .archive-drag-handle { grid-column: 1; grid-row: 1 / 3; align-self: center; }
+  .archive-item.is-draggable .archive-num         { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+  .archive-item.is-draggable .archive-date        { grid-column: 3; grid-row: 2; font-size: 0.7rem; }
+  .archive-item.is-draggable .archive-title       { grid-column: 3; grid-row: 1; }
+  .archive-item.is-draggable .archive-link        { grid-column: 4; grid-row: 1 / 3; align-self: center; }
+
   .footer-label,
   .footer-alt,
   .footer-year { display: none; }
-
   .footer-divider:first-of-type { display: none; }
+  .footer-title { font-size: 0.9rem; }
 
-  .footer-title {
-    font-size: 0.9rem;
-  }
+  .section-label--toggle { gap: 0.6rem; }
 }

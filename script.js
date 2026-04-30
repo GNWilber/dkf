@@ -1,5 +1,5 @@
 // ============================================================
-//  DYSKUSYJNY KLUB FILMOWY — logika strony v5
+//  DYSKUSYJNY KLUB FILMOWY — logika strony v6
 // ============================================================
 
 const POLISH_MONTHS = [
@@ -14,7 +14,6 @@ function parseDate(str) {
   return new Date(y, m - 1, d);
 }
 
-/** Upcoming = today or later (including yesterday for the card display buffer). */
 function isUpcoming(movieDate) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -23,7 +22,6 @@ function isUpcoming(movieDate) {
   return movieDate >= cutoff;
 }
 
-/** Returns the first movie that is today or in the future (strict). */
 function getNextMovie(sortedMovies) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -32,7 +30,6 @@ function getNextMovie(sortedMovies) {
 
 // ---- DISPLAY HELPERS ----
 
-/** "Incepcja" or "Incepcja (Inception)" */
 function displayName(movie) {
   return movie.altName ? `${movie.name} (${movie.altName})` : movie.name;
 }
@@ -59,10 +56,18 @@ function buildArchiveCopyText(archiveMovies, globalIndexMap) {
     .join("\n");
 }
 
+/** Ranking format — NO dates, numbered top-down in current ranking order. */
+function buildRankingCopyText(rankingMovies) {
+  return rankingMovies
+    .map((m, i) => {
+      const name = displayName(m);
+      return `${i + 1}. ${name} [${m.year}]`;
+    })
+    .join("\n");
+}
+
 // ============================================================
 //  TOAST SYSTEM
-//  — when footer is present: slides over footer content
-//  — when no footer: classic floating toast from bottom
 // ============================================================
 
 let _toastTimer = null;
@@ -83,7 +88,6 @@ function showToast(message) {
     return;
   }
 
-  // ---- Floating fallback (no footer) ----
   const existing = document.getElementById("copy-toast");
   if (existing) existing.remove();
 
@@ -93,7 +97,6 @@ function showToast(message) {
   toast.textContent = message;
   document.body.appendChild(toast);
 
-  // Force reflow to trigger transition
   toast.getBoundingClientRect();
   toast.classList.add("visible");
 
@@ -108,7 +111,6 @@ async function copyToClipboard(text, toastMessage) {
   try {
     await navigator.clipboard.writeText(text);
   } catch {
-    // Fallback for older browsers / non-HTTPS
     const ta = document.createElement("textarea");
     ta.value = text;
     ta.style.cssText = "position:fixed;opacity:0;pointer-events:none";
@@ -159,10 +161,8 @@ function buildCard(movie) {
     </a>
   `;
 
-  // Filmweb link — open in new tab, don't trigger card copy
   card.querySelector(".card-link").addEventListener("click", e => e.stopPropagation());
 
-  // Clicking anywhere else copies the title
   card.addEventListener("click", () => {
     const text = `${displayName(movie)} [${movie.year}]`;
     copyToClipboard(text, `Skopiowano\n${displayName(movie)} [${movie.year}]`);
@@ -172,19 +172,22 @@ function buildCard(movie) {
 }
 
 // ============================================================
-//  ARCHIVE ITEM BUILDER
+//  ARCHIVE / RANKING ITEM BUILDER
 // ============================================================
 
-function buildArchiveItem(movie, globalNum) {
+function buildArchiveItem(movie, num, draggable) {
   const date = parseDate(movie.date);
   const day = date.getDate();
   const month = POLISH_MONTHS[date.getMonth()];
   const year = date.getFullYear();
 
   const li = document.createElement("li");
-  li.className = "archive-item";
+  li.className = "archive-item" + (draggable ? " is-draggable" : "");
+  li._movie = movie;
+
   li.innerHTML = `
-    <span class="archive-num">${globalNum}.</span>
+    ${draggable ? '<span class="archive-drag-handle" title="Przeciągnij, aby zmienić pozycję">⋮⋮</span>' : ''}
+    <span class="archive-num">${num}.</span>
     <span class="archive-date">${day} ${month} ${year}</span>
     <span class="archive-dot"></span>
     <span class="archive-title">
@@ -197,41 +200,97 @@ function buildArchiveItem(movie, globalNum) {
     </a>
   `;
 
-  // Filmweb link — open in new tab, don't trigger copy
   li.querySelector(".archive-link").addEventListener("click", e => e.stopPropagation());
 
-  // Clicking the row copies the title
   li.addEventListener("click", () => {
     const text = `${displayName(movie)} [${movie.year}]`;
     copyToClipboard(text, `Skopiowano\n${displayName(movie)} [${movie.year}]`);
   });
 
+  if (draggable) {
+    attachDragHandlers(li);
+  }
+
   return li;
 }
 
 // ============================================================
-//  STICKY FOOTER — announcement OR next upcoming movie
+//  DRAG & DROP (HTML5)
 // ============================================================
 
-/** Returns true when ANNOUNCEMENT is set and has not yet expired. */
+let _draggedEl = null;
+
+function attachDragHandlers(li) {
+  li.draggable = true;
+
+  li.addEventListener("dragstart", e => {
+    _draggedEl = li;
+    // Defer adding the dragging class so the drag image looks normal
+    setTimeout(() => li.classList.add("dragging"), 0);
+    e.dataTransfer.effectAllowed = "move";
+    try { e.dataTransfer.setData("text/plain", ""); } catch {}
+  });
+
+  li.addEventListener("dragend", () => {
+    li.classList.remove("dragging");
+    _draggedEl = null;
+    syncRankingFromDOM();
+  });
+
+  li.addEventListener("dragover", e => {
+    e.preventDefault();
+    if (!_draggedEl || _draggedEl === li) return;
+
+    const rect = li.getBoundingClientRect();
+    const after = (e.clientY - rect.top) > rect.height / 2;
+    const list = li.parentNode;
+
+    if (after && li.nextSibling !== _draggedEl) {
+      list.insertBefore(_draggedEl, li.nextSibling);
+      updateRankingNumbers();
+    } else if (!after && li.previousSibling !== _draggedEl) {
+      list.insertBefore(_draggedEl, li);
+      updateRankingNumbers();
+    }
+  });
+
+  // NOTE: HTML5 native drag does not work on most touch devices.
+  // For touch support, you'd plug pointer/touch handlers in here.
+}
+
+function updateRankingNumbers() {
+  const items = document.querySelectorAll("#archive-list .archive-item");
+  items.forEach((it, idx) => {
+    const numEl = it.querySelector(".archive-num");
+    if (numEl) numEl.textContent = (idx + 1) + ".";
+  });
+}
+
+function syncRankingFromDOM() {
+  const items = document.querySelectorAll("#archive-list .archive-item");
+  rankingOrder = Array.from(items).map(it => it._movie);
+  updateRankingNumbers();
+}
+
+// ============================================================
+//  STICKY FOOTER
+// ============================================================
+
 function isAnnouncementActive() {
   if (typeof ANNOUNCEMENT === "undefined" || !ANNOUNCEMENT || !ANNOUNCEMENT.trim()) return false;
   if (typeof ANNOUNCEMENT_EXPIRY === "undefined" || !ANNOUNCEMENT_EXPIRY) return true;
   const expiry = parseDate(ANNOUNCEMENT_EXPIRY);
-  expiry.setHours(23, 59, 59, 999); // expires at end of that day
+  expiry.setHours(23, 59, 59, 999);
   return new Date() <= expiry;
 }
 
 function renderFooter(nextMovie) {
   const showAnnouncement = isAnnouncementActive();
-
-  // No footer at all when there's nothing to show
   if (!showAnnouncement && !nextMovie) return;
 
   const footer = document.createElement("footer");
 
   if (showAnnouncement) {
-    // ---- Announcement mode ----
     footer.classList.add("footer--announcement");
     footer.innerHTML = `
       <div class="footer-inner">
@@ -246,7 +305,6 @@ function renderFooter(nextMovie) {
       </div>
     `;
   } else {
-    // ---- Normal next-movie mode ----
     const date = parseDate(nextMovie.date);
     const day = date.getDate();
     const monthFull = POLISH_MONTHS[date.getMonth()];
@@ -283,20 +341,82 @@ function renderFooter(nextMovie) {
 }
 
 // ============================================================
+//  ARCHIVE / RANKING STATE & RENDERING
+// ============================================================
+
+let currentMode = "archive";       // "archive" | "ranking"
+let archiveMovies = [];            // newest → oldest
+let globalIndexMap = new Map();
+let rankingOrder = [];             // user-customizable
+
+function renderArchiveList() {
+  const archiveEl = document.getElementById("archive-list");
+  archiveEl.innerHTML = "";
+
+  if (archiveMovies.length === 0) return;
+
+  if (currentMode === "archive") {
+    archiveMovies.forEach(m => {
+      archiveEl.appendChild(buildArchiveItem(m, globalIndexMap.get(m), false));
+    });
+  } else {
+    rankingOrder.forEach((m, i) => {
+      archiveEl.appendChild(buildArchiveItem(m, i + 1, true));
+    });
+  }
+}
+
+function setMode(mode) {
+  if (mode === currentMode) return;
+  currentMode = mode;
+
+  const labelArchive = document.getElementById("label-archive");
+  const labelRanking = document.getElementById("label-ranking");
+  const rankingActions = document.getElementById("ranking-actions");
+  const archiveSection = document.querySelector(".archive-section");
+
+  labelArchive.classList.toggle("is-active", mode === "archive");
+  labelRanking.classList.toggle("is-active", mode === "ranking");
+
+  labelArchive.title = mode === "archive"
+    ? "Kliknij, aby skopiować do schowka"
+    : "Kliknij, aby przełączyć";
+  labelRanking.title = mode === "ranking"
+    ? "Kliknij, aby skopiować ranking"
+    : "Kliknij, aby przełączyć";
+
+  rankingActions.classList.toggle("hidden", mode !== "ranking");
+  archiveSection.classList.toggle("is-ranking", mode === "ranking");
+
+  renderArchiveList();
+}
+
+function copyArchive() {
+  if (archiveMovies.length === 0) return;
+  const text = buildArchiveCopyText(archiveMovies, globalIndexMap);
+  copyToClipboard(text, `Archiwum skopiowane\n${archiveMovies.length} filmów`);
+}
+
+function copyRanking() {
+  if (rankingOrder.length === 0) return;
+  const text = buildRankingCopyText(rankingOrder);
+  copyToClipboard(text, `Ranking skopiowany\n${rankingOrder.length} filmów`);
+}
+
+// ============================================================
 //  MAIN RENDER
 // ============================================================
 
 function render() {
   const sorted = [...MOVIES].sort((a, b) => parseDate(a.date) - parseDate(b.date));
 
-  // Global index map: each movie → its position (1-indexed) in chronological order
-  const globalIndexMap = new Map();
+  globalIndexMap = new Map();
   sorted.forEach((m, i) => globalIndexMap.set(m, i + 1));
 
   const upcomingMovies = sorted.filter(m =>  isUpcoming(parseDate(m.date)));
-  const archiveMovies  = sorted.filter(m => !isUpcoming(parseDate(m.date))).reverse(); // newest first
+  archiveMovies        = sorted.filter(m => !isUpcoming(parseDate(m.date))).reverse(); // newest first
+  rankingOrder         = [...archiveMovies]; // default: newest → oldest, ranked 1..N top-down
 
-  // ---- Sticky footer (next film, strictly today or future) ----
   renderFooter(getNextMovie(sorted));
 
   // ---- Upcoming cards ----
@@ -313,19 +433,15 @@ function render() {
     });
   }
 
-  // ---- Archive list ----
-  const archiveEl    = document.getElementById("archive-list");
+  // ---- Archive / Ranking ----
   const archiveEmpty = document.getElementById("archive-empty");
-
   if (archiveMovies.length === 0) {
     archiveEmpty.classList.remove("hidden");
   } else {
-    archiveMovies.forEach(m => {
-      archiveEl.appendChild(buildArchiveItem(m, globalIndexMap.get(m)));
-    });
+    renderArchiveList();
   }
 
-  // ---- Clickable section labels ----
+  // ---- Section labels ----
   document.getElementById("label-upcoming").addEventListener("click", () => {
     if (upcomingMovies.length === 0) return;
     const text = buildUpcomingCopyText(upcomingMovies);
@@ -336,13 +452,26 @@ function render() {
     );
   });
 
+  // Toggle: click selected = copy, click non-selected = switch
   document.getElementById("label-archive").addEventListener("click", () => {
-    if (archiveMovies.length === 0) return;
-    const text = buildArchiveCopyText(archiveMovies, globalIndexMap);
-    copyToClipboard(
-      text,
-      `Archiwum skopiowane\n${archiveMovies.length} filmów`
-    );
+    if (currentMode !== "archive") {
+      setMode("archive");
+      return;
+    }
+    copyArchive();
+  });
+
+  document.getElementById("label-ranking").addEventListener("click", () => {
+    if (currentMode !== "ranking") {
+      setMode("ranking");
+      return;
+    }
+    copyRanking();
+  });
+
+  document.getElementById("ranking-copy-btn").addEventListener("click", e => {
+    e.stopPropagation();
+    copyRanking();
   });
 }
 

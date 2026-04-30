@@ -37,9 +37,7 @@
         <span class="label-text" id="label-upcoming" title="Kliknij, aby skopiować do schowka">Nadchodzące spotkania</span>
         <span class="label-line"></span>
       </div>
-      <div class="cards-grid" id="upcoming-cards">
-        <!-- Dynamically populated -->
-      </div>
+      <div class="cards-grid" id="upcoming-cards"></div>
       <div class="empty-state hidden" id="upcoming-empty">
         <p>Brak zaplanowanych seansów. Wróć wkrótce.</p>
       </div>
@@ -64,19 +62,26 @@
     </section>
 
     <section class="archive-section">
-      <div class="section-label">
+      <div class="section-label section-label--toggle">
         <span class="label-line"></span>
-        <span class="label-text" id="label-archive" title="Kliknij, aby skopiować do schowka">Poprzednie spotkania</span>
+        <span class="label-text label-toggle is-active" id="label-archive" data-mode="archive" title="Kliknij, aby skopiować do schowka">Poprzednie spotkania</span>
+        <span class="label-toggle-divider"></span>
+        <span class="label-text label-toggle" id="label-ranking" data-mode="ranking" title="Kliknij, aby przełączyć">Ranking</span>
         <span class="label-line"></span>
       </div>
       <ul class="archive-list" id="archive-list"></ul>
+      <div class="ranking-actions hidden" id="ranking-actions">
+        <button class="ranking-copy-btn" id="ranking-copy-btn" type="button">
+          <span class="ranking-copy-icon">⎘</span>
+          <span>Skopiuj ranking</span>
+        </button>
+        <p class="ranking-hint">Przeciągnij filmy, aby zmienić kolejność</p>
+      </div>
       <div class="empty-state hidden" id="archive-empty">
         <p>Brak omówionych filmów.</p>
       </div>
     </section>
   </main>
-
-  <!-- footer is injected by script.js only when there is an upcoming movie -->
 
   <script src="movies.js"></script>
   <script src="script.js"></script>
