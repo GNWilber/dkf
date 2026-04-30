@@ -788,6 +788,70 @@ footer.toast-active .footer-toast-msg {
 }
 
 /* ============================================================
+   FOOTER — ANNOUNCEMENT MODE
+   ============================================================ */
+
+footer.footer--announcement {
+  border-top-color: var(--gold-dim);
+  background: rgba(12, 11, 9, 0.96);
+}
+
+footer.footer--announcement::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.6;
+}
+
+.footer-announce-label {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  color: var(--gold) !important;
+  letter-spacing: 0.28em !important;
+  text-shadow:
+    0 0 12px rgba(212, 168, 76, 0.55),
+    0 0 30px rgba(212, 168, 76, 0.2);
+}
+
+.footer-announce-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(212, 168, 76, 0.8);
+  animation: announcePulse 2s ease-in-out infinite;
+}
+
+@keyframes announcePulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px  rgba(212, 168, 76, 0.8); }
+  50%       { opacity: 0.4; box-shadow: 0 0 12px rgba(212, 168, 76, 0.3); }
+}
+
+.footer-announce-text {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 400;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  letter-spacing: 0.01em;
+}
+
+/* On mobile, hide the announcement label & divider — keep only the text */
+@media (max-width: 640px) {
+  .footer-announce-label { display: none; }
+  .footer--announcement .footer-divider { display: none; }
+  .footer-announce-text { font-size: 0.88rem; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 

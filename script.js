@@ -210,42 +210,73 @@ function buildArchiveItem(movie, globalNum) {
 }
 
 // ============================================================
-//  STICKY FOOTER — next upcoming movie
+//  STICKY FOOTER — announcement OR next upcoming movie
 // ============================================================
 
+/** Returns true when ANNOUNCEMENT is set and has not yet expired. */
+function isAnnouncementActive() {
+  if (typeof ANNOUNCEMENT === "undefined" || !ANNOUNCEMENT || !ANNOUNCEMENT.trim()) return false;
+  if (typeof ANNOUNCEMENT_EXPIRY === "undefined" || !ANNOUNCEMENT_EXPIRY) return true;
+  const expiry = parseDate(ANNOUNCEMENT_EXPIRY);
+  expiry.setHours(23, 59, 59, 999); // expires at end of that day
+  return new Date() <= expiry;
+}
+
 function renderFooter(nextMovie) {
-  if (!nextMovie) return; // No footer when nothing is upcoming
+  const showAnnouncement = isAnnouncementActive();
 
-  const date = parseDate(nextMovie.date);
-  const day = date.getDate();
-  const monthFull = POLISH_MONTHS[date.getMonth()];
-  const year = date.getFullYear();
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const isToday = date.getTime() === today.getTime();
+  // No footer at all when there's nothing to show
+  if (!showAnnouncement && !nextMovie) return;
 
   const footer = document.createElement("footer");
-  footer.innerHTML = `
-    <div class="footer-inner">
-      <div class="footer-content">
-        <span class="footer-label">${isToday ? "Dzisiejszy seans" : "Następny seans"}</span>
-        <div class="footer-divider"></div>
-        <div class="footer-meta">
-          <span class="footer-date">${day} ${monthFull} ${year}</span>
-          <span class="footer-sep">·</span>
-          <span class="footer-title">${nextMovie.name}</span>
-          ${nextMovie.altName ? `<span class="footer-alt">${nextMovie.altName}</span>` : ""}
-          <span class="footer-year">${nextMovie.year}</span>
+
+  if (showAnnouncement) {
+    // ---- Announcement mode ----
+    footer.classList.add("footer--announcement");
+    footer.innerHTML = `
+      <div class="footer-inner">
+        <div class="footer-content">
+          <span class="footer-label footer-announce-label">
+            <span class="footer-announce-dot"></span>Ogłoszenie
+          </span>
+          <div class="footer-divider"></div>
+          <span class="footer-announce-text">${ANNOUNCEMENT}</span>
         </div>
-        <div class="footer-divider"></div>
-        <a class="footer-fw-link" href="${nextMovie.filmweb}" target="_blank" rel="noopener" title="Filmweb">
-          <img src="filmweb.svg" alt="Filmweb" class="footer-fw-icon" />
-        </a>
+        <div class="footer-toast-msg" aria-live="polite"></div>
       </div>
-      <div class="footer-toast-msg" aria-live="polite"></div>
-    </div>
-  `;
+    `;
+  } else {
+    // ---- Normal next-movie mode ----
+    const date = parseDate(nextMovie.date);
+    const day = date.getDate();
+    const monthFull = POLISH_MONTHS[date.getMonth()];
+    const year = date.getFullYear();
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const isToday = date.getTime() === today.getTime();
+
+    footer.innerHTML = `
+      <div class="footer-inner">
+        <div class="footer-content">
+          <span class="footer-label">${isToday ? "Dzisiejszy seans" : "Następny seans"}</span>
+          <div class="footer-divider"></div>
+          <div class="footer-meta">
+            <span class="footer-date">${day} ${monthFull} ${year}</span>
+            <span class="footer-sep">·</span>
+            <span class="footer-title">${nextMovie.name}</span>
+            ${nextMovie.altName ? `<span class="footer-alt">${nextMovie.altName}</span>` : ""}
+            <span class="footer-year">${nextMovie.year}</span>
+          </div>
+          <div class="footer-divider"></div>
+          <a class="footer-fw-link" href="${nextMovie.filmweb}" target="_blank" rel="noopener" title="Filmweb">
+            <img src="filmweb.svg" alt="Filmweb" class="footer-fw-icon" />
+          </a>
+        </div>
+        <div class="footer-toast-msg" aria-live="polite"></div>
+      </div>
+    `;
+  }
 
   document.body.appendChild(footer);
   document.body.classList.add("has-footer");
