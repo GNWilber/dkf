@@ -26,7 +26,7 @@ function parseDate(str) {
 }
 
 
-/** Upcoming = today or later, including yesterday for the card display buffer. */
+/** Upcoming = today or later. */
 
 function isUpcoming(movieDate) {
 
@@ -37,7 +37,7 @@ function isUpcoming(movieDate) {
 
   const cutoff = new Date(today);
 
-  cutoff.setDate(cutoff.getDate() - 1);
+  cutoff.setDate(cutoff.getDate());
 
 
   return movieDate >= cutoff;
