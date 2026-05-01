@@ -12,7 +12,7 @@
   // },
 
 
-const ANNOUNCEMENT = "15 maja nadal czekają na propozycję.";
+const ANNOUNCEMENT = "15 maja nadal czeka na propozycję.";
 
 const ANNOUNCEMENT_EXPIRY = "15.05.2026";
 
