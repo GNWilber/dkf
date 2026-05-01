@@ -155,7 +155,7 @@ const MOVIES = [
     altName: "",
     year: 2009,
     filmweb: "https://www.filmweb.pl/film/Summer+Wars-2009-507454",
-    date: "22.05.2026"
+    date: "15.05.2026"
   },  
   {
     name: "Czeka na nas świat",
