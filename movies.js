@@ -159,7 +159,7 @@ const MOVIES = [
   },  
   {
     name: "Czeka na nas świat",
-    altName: "",
+    altName: "Opłacony z Hiszpańskich funduszy",
     year: 2006,
     filmweb: "https://www.filmweb.pl/film/Czeka+na+nas+%C5%9Bwiat-2006-113155",
     date: "08.05.2026"
