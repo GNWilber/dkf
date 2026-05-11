@@ -159,9 +159,16 @@ const MOVIES = [
   },  
   {
     name: "Czeka na nas świat",
-    altName: "Opłacony z Hiszpańskich funduszy",
+    altName: "",
     year: 2006,
     filmweb: "https://www.filmweb.pl/film/Czeka+na+nas+%C5%9Bwiat-2006-113155",
     date: "08.05.2026"
   },    
+  {
+    name: "Beau Is Afraid",
+    altName: "Bo się boi",
+    year: 2023,
+    filmweb: "https://www.filmweb.pl/film/Bo+si%C4%99+boi-2023-10003754",
+    date: "22.05.2026"
+  },  
 ];
