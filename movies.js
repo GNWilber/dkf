@@ -178,4 +178,11 @@ const MOVIES = [
     filmweb: "https://www.filmweb.pl/film/Dersu+Uza%C5%82a-1975-34074",
     date: "29.05.2026"
   },  
+  {
+    name: "Az ember tragédiája",
+    altName: "Tragedia człowieka",
+    year: 2011,
+    filmweb: "https://www.filmweb.pl/film/Tragedia+cz%C5%82owieka-2011-643034",
+    date: "05.06.2026"
+  },  
 ];
