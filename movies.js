@@ -171,4 +171,11 @@ const MOVIES = [
     filmweb: "https://www.filmweb.pl/film/Bo+si%C4%99+boi-2023-10003754",
     date: "22.05.2026"
   },  
+  {
+    name: "Дерсу Узала",
+    altName: "Dersu Uzała",
+    year: 1975,
+    filmweb: "https://www.filmweb.pl/film/Dersu+Uza%C5%82a-1975-34074",
+    date: "29.05.2026"
+  },  
 ];
