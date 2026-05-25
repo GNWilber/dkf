@@ -32,7 +32,7 @@ const MOVIES = [
     year: 2024,
     filmweb: "https://www.filmweb.pl/film/Flow-2024-10052360",
     date: "19.12.2025",
-    flag: "🇱🇻🇫🇷🇧🇪"
+    flag: "🇱🇻 🇫🇷 🇧🇪"
   },
   {
     name: "Hacksaw Ridge",
@@ -40,7 +40,7 @@ const MOVIES = [
     year: 2016,
     filmweb: "https://www.filmweb.pl/film/Prze%C5%82%C4%99cz+ocalonych-2016-658802",
     date: "02.01.2026",
-    flag: "🇺🇸🇦🇺"
+    flag: "🇺🇸 🇦🇺"
   },
   {
     name: "Lucky",
@@ -96,7 +96,7 @@ const MOVIES = [
     year: 2014,
     filmweb: "https://www.filmweb.pl/film/Dzikie+historie-2014-689545",
     date: "27.02.2026",
-    flag: "🇦🇷🇪🇸"
+    flag: "🇦🇷 🇪🇸"
   },
   {
     name: "Inside Out 2",
@@ -112,7 +112,7 @@ const MOVIES = [
     year: 2009,
     filmweb: "https://www.filmweb.pl/film/Fantastyczny+Pan+Lis-2009-156466",
     date: "13.03.2026",
-    flag: "🇺🇸🇬🇧"
+    flag: "🇺🇸 🇬🇧"
   },
   {
     name: "Dream Productions",
@@ -200,7 +200,7 @@ const MOVIES = [
     year: 1975,
     filmweb: "https://www.filmweb.pl/film/Dersu+Uza%C5%82a-1975-34074",
     date: "29.05.2026",
-    flag: "🇷🇺🇯🇵"
+    flag: "🇷🇺 🇯🇵"
   },
   // {
   //   name: "Az ember tragédiája",
