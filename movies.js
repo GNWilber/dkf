@@ -88,7 +88,7 @@ const MOVIES = [
     year: 2003,
     filmweb: "https://www.filmweb.pl/film/Ostatni+samuraj-2003-36447",
     date: "20.02.2026",
-    flag: "🇺🇸"
+    flag: "🇯🇵 🇳🇿 🇺🇸"
   },
   {
     name: "Relatos salvajes",
@@ -96,7 +96,7 @@ const MOVIES = [
     year: 2014,
     filmweb: "https://www.filmweb.pl/film/Dzikie+historie-2014-689545",
     date: "27.02.2026",
-    flag: "🇦🇷 🇪🇸"
+    flag: "🇦🇷 🇪🇸 🇫🇷 🇬🇧"
   },
   {
     name: "Inside Out 2",
@@ -112,7 +112,7 @@ const MOVIES = [
     year: 2009,
     filmweb: "https://www.filmweb.pl/film/Fantastyczny+Pan+Lis-2009-156466",
     date: "13.03.2026",
-    flag: "🇺🇸 🇬🇧"
+    flag: "🇺🇸"
   },
   {
     name: "Dream Productions",
@@ -144,7 +144,7 @@ const MOVIES = [
     year: 2020,
     filmweb: "https://www.filmweb.pl/film/Na+rauszu-2020-838872",
     date: "10.04.2026",
-    flag: "🇩🇰"
+    flag: "🇧🇪 🇩🇰 🇫🇷 🇳🇱 🇸🇪"
   },
   {
     name: "Forrest Gump",
