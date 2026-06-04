@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OdwyCamp w Pałacu!</title>
+
+<!-- Leaflet.js -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  :root{
+    --green-900:#1b3a2b;
+    --green-700:#2e6b4a;
+    --green-500:#3f9d6a;
+    --green-300:#8fd6ac;
+    --green-100:#e6f5ec;
+    --cream:#f5f8f3;
+    --discord:#5865F2;
+    --radius:22px;
+    --shadow:0 10px 30px rgba(27,58,43,.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 500px at 80% -10%, var(--green-100), transparent),
+      var(--cream);
+    color:var(--green-900);
+    line-height:1.55;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:24px 18px 60px;}
+
+  /* HERO */
+  header.hero{
+    background:linear-gradient(135deg,var(--green-700),var(--green-500));
+    color:#fff;
+    border-radius:var(--radius);
+    padding:46px 34px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"🌲";
+    position:absolute;right:24px;bottom:-10px;
+    font-size:120px;opacity:.18;
+  }
+  header.hero h1{
+    margin:0;
+    font-size:clamp(30px,6vw,52px);
+    letter-spacing:.5px;
+  }
+  header.hero p{margin:10px 0 0;font-size:18px;opacity:.95;max-width:640px;}
+
+  section{
+    background:#e3ffdc;
+    border-radius:var(--radius);
+    padding:26px 28px;
+    margin-top:24px;
+    box-shadow:var(--shadow);
+  }
+  h2{margin:0 0 16px;color:var(--green-700);font-size:24px;}
+  h2 .ico{margin-right:8px;}
+
+  /* MAPA */
+  #map{
+    height:480px;
+    width:100%;
+    border-radius:var(--radius);
+    z-index:0;
+    box-shadow:inset 0 0 0 2px var(--green-100);
+  }
+  .map-hint{font-size:14px;color:var(--green-700);margin-top:12px;opacity:.85;}
+
+  /* TABELA UCZESTNIKÓW */
+  .table-scroll{overflow-x:auto;border-radius:var(--radius);}
+  table{
+    border-collapse:separate;
+    border-spacing:0;
+    width:100%;
+    min-width:840px;
+    font-size:15px;
+  }
+  thead th{
+    background:var(--green-700);
+    color:#fff;
+    text-align:left;
+    padding:14px 14px;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  thead th:first-child{border-top-left-radius:16px;}
+  thead th:last-child{border-top-right-radius:16px;}
+  tbody td{
+    padding:12px 14px;
+    border-bottom:1px solid var(--green-100);
+    vertical-align:top;
+  }
+  tbody tr{transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;cursor:pointer;}
+  tbody tr:hover{
+    filter:brightness(1.02);
+    box-shadow:0 6px 18px rgba(27,58,43,.18);
+    transform:translateY(-1px);
+  }
+  .who{display:flex;align-items:center;gap:10px;font-weight:700;}
+  .dot{width:16px;height:16px;border-radius:50%;flex:0 0 auto;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.1);}
+  .contact-cell{display:flex;flex-direction:column;gap:4px;font-size:14px;}
+  .contact-cell a{color:var(--green-700);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+  .contact-cell a:hover{text-decoration:underline;}
+  .contact-cell img{width:22px;height:22px;vertical-align:middle;}
+  .stops{color:var(--green-700);font-size:14px;}
+
+  /* LISTY INFO */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+  ul.nice{list-style:none;padding:0;margin:0;}
+  ul.nice li{
+    padding:10px 14px;margin-bottom:8px;
+    background:var(--green-100);border-radius:14px;
+    display:flex;align-items:center;gap:10px;font-weight:500;
+  }
+  ul.nice li .em{font-size:20px;}
+
+  /* DISCORD / CTA */
+  .cta{
+    background:linear-gradient(135deg,#3a3f6b,#5865F2);
+    color:#fff;border-radius:var(--radius);
+    padding:24px 26px;margin-top:24px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+    box-shadow:var(--shadow);
+  }
+  .cta a{color:#fff;font-weight:700;}
+  .discord-handle{
+    color:var(--discord);
+    background:#fff;
+    padding:2px 10px;border-radius:10px;
+    font-weight:800;text-decoration:none;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .discord-handle img{width:22px;height:22px;}
+  .btn-discord{
+    background:var(--discord);color:#fff;
+    padding:12px 20px;border-radius:14px;
+    text-decoration:none;font-weight:700;
+    display:inline-flex;align-items:center;gap:10px;
+    box-shadow:0 6px 18px rgba(88,101,242,.4);
+  }
+  .btn-discord img{width:26px;height:26px;}
+  footer{text-align:center;margin-top:34px;color:var(--green-700);opacity:.8;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero">
+    <h1>🏰 OdwyCamp w Pałacu!</h1>
+    <p>Od 31.07 do 02.08 2026 roku będzie OdwyCamp w Pałacu w Żeliznie przy Białoruskiej granicy.</p>
+  </header>
+
+  <!-- ===================== MAPA ===================== -->
+  <section>
+    <h2><span class="ico">🗺️</span>Mapa & trasy uczestników</h2>
+    <div id="map"></div>
+    <p class="map-hint">💡 Najedź kursorem na uczestnika w tabeli poniżej, aby podświetlić jego trasę na mapie.</p>
+  </section>
+
+  <!-- ===================== UCZESTNICY ===================== -->
+  <section>
+    <h2><span class="ico">🧑‍🤝‍🧑</span>Uczestnicy</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Imię</th>
+            <th>Skąd</th>
+            <th>Przystanki</th>
+            <th>Automobil</th>
+            <th>Od kiedy</th>
+            <th>Do kiedy</th>
+            <th>Kontakt</th>
+          </tr>
+        </thead>
+        <tbody id="participants-body"><!-- generowane przez JS --></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== INFO ===================== -->
+  <section>
+    <div class="grid2">
+      <div>
+        <h2><span class="ico">🎒</span>Co będzie na miejscu</h2>
+        <ul class="nice">
+          <li><span class="em">🏠</span> dach nad głową</li>
+          <li><span class="em">💧</span> woda</li>
+          <li><span class="em">⚡</span> prąd</li>
+          <li><span class="em">🚽</span> kibelek</li>
+          <li><span class="em">🚿</span> prysznic</li>
+          <li><span class="em">🍳</span> kuchenka</li>
+          <li><span class="em">🔥</span> ognisko</li>
+          <li><span class="em">🛏️</span> materace (po prostu materace)</li>
+          <li><span class="em">⛺</span> miejsce na namiot</li>
+          <li><span class="em">🅿️</span> parking</li>
+          <li><span class="em">🛒</span> Dino (7 km)</li>
+        </ul>
+      </div>
+      <div>
+        <h2><span class="ico">🚉</span>Stacje kolejowe w okolicy</h2>
+        <ul class="nice">
+          <li><span class="em">🚆</span> Międzyrzec Podlaski</li>
+          <li><span class="em">🚆</span> Bezwola</li>
+        </ul>
+        <h2 style="margin-top:24px;"><span class="ico">📍</span>Miejsce spotkania</h2>
+        <ul class="nice">
+          <li><span class="em">🏰</span> Żelizna 91, 21-311 Żelizna</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA DISCORD ===================== -->
+  <div class="cta">
+    <span style="font-size:34px;">🚗</span>
+    <div style="flex:1;min-width:260px;">
+      <strong>Jeśli masz wolne miejsce i chcesz kogoś podwieźć,</strong> to napisz do mnie na Discord @gnwilber
+    </div>
+  </div>
+
+  <div class="cta">
+    <span style="font-size:34px;">💬</span>
+    <div style="flex:1;min-width:260px;">
+      <strong>OdwykCampowa dyskusja jest na Discordzie</strong>
+    </div>
+    <a class="btn-discord" href="https://discord.gg/PBTQbRYrj6" target="_blank" rel="noopener">
+      <img src="https://cdn3.emoji.gg/emojis/7561-discord-clyde.png" alt="discord">
+      Dołącz na Discord
+    </a>
+  </div>
+
+  <footer>🌿 OdwyCamp w Pałacu! • do zobaczenia w Żeliznej 🌿</footer>
+</div>
+
+<script>
+/* =========================================================
+   1) MIEJSCE SPOTKANIA
+   --------------------------------------------------------
+   ⚠️ WAŻNE: Leaflet potrzebuje WSPÓŁRZĘDNYCH [lat, lng],
+   sama nazwa miejscowości nie wystarczy.
+   Współrzędne poniżej to PRZYBLIŻENIE dla Żelizna 91.
+   Sprawdź dokładny punkt np. na openstreetmap.org
+   (klik prawym -> "Pokaż adres") i wklej tutaj.
+========================================================= */
+const MEETING = {
+  name: "Pałac – Żelizna 91",
+  coords: [51.7975, 22.9560]   // <-- ZWERYFIKUJ / popraw
+};
+
+/* =========================================================
+   2) LISTA UCZESTNIKÓW  (łatwa do rozbudowy)
+   --------------------------------------------------------
+   Aby dodać uczestnika, skopiuj jeden obiekt {...} i edytuj.
+
+   Pola:
+   - name      : Imię
+   - from      : skąd (tekst wyświetlany)
+   - coords    : [lat, lng] miejsca startu  (WYMAGANE dla mapy)
+   - stops     : tablica przystanków:
+                 { name:"Nazwa", coords:[lat,lng] }
+                 (jeśli nie ma przystanków -> pusta tablica [])
+   - car       : rodzaj samochodu (sam tekst)
+   - from_date : od kiedy
+   - to_date   : do kiedy
+   - contact   : { email, phone, discord, whatsapp }  (puste = pomijane)
+
+   👉 Kolor jest LOSOWANY DETERMINISTYCZNIE z imienia
+      (stały dla danej osoby), nic nie musisz wpisywać.
+========================================================= */
+const participants = [
+  {
+    name: "Martin",
+    from: "Wrocław",
+    coords: [51.108980, 17.032668],
+    stops: [],
+    car: "Motorek",
+    from_date: "31.07",
+    to_date: "02.08",
+    contact: {
+      discord: "@unprofessionalmartin"
+    }
+  }
+];
+
+/* =========================================================
+   3) KOLORY – stałe dla uczestnika (seed z imienia)
+========================================================= */
+function colorFromString(str){
+  let h = 0;
+  for (let i = 0; i < str.length; i++){
+    h = str.charCodeAt(i) + ((h << 5) - h);
+    h = h & h;
+  }
+  const hue = Math.abs(h) % 360;
+  // nasycone, średnio-ciemne -> dobrze widoczne na mapie i jako kropka
+  return `hsl(${hue}, 65%, 45%)`;
+}
+
+/* =========================================================
+   4) MAPA LEAFLET
+========================================================= */
+const map = L.map('map').setView([52.0, 22.4], 6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// Marker miejsca spotkania
+const meetingIcon = L.divIcon({
+  className: '',
+  html: '<div style="font-size:30px;line-height:30px;transform:translate(-50%,-100%);">🏰</div>',
+  iconSize: [30, 30]
+});
+L.marker(MEETING.coords, { icon: meetingIcon })
+  .addTo(map)
+  .bindPopup(`<b>${MEETING.name}</b><br>Żelizna 91, 21-311 Żelizna`);
+
+// Rysowanie tras + markerów startu + przystanków
+const routes = {}; // name -> warstwa polilinii (do podświetlania)
+const allLatLngs = [MEETING.coords];
+
+participants.forEach((p, idx) => {
+  const color = colorFromString(p.name);
+  p._color = color;
+
+  // sekwencja punktów: start -> przystanki -> spotkanie
+  const points = [p.coords, ...p.stops.map(s => s.coords), MEETING.coords]
+    .filter(c => Array.isArray(c));
+
+  points.forEach(c => allLatLngs.push(c));
+
+  // główna polilinia
+  const line = L.polyline(points, {
+    color: color,
+    weight: 4,
+    opacity: 0.75,
+    lineJoin: 'round'
+  }).addTo(map);
+  line.bindPopup(`<b>Trasa: ${p.name}</b><br>${p.from} → Pałac`);
+
+  // marker startu
+  const startMarker = L.circleMarker(p.coords, {
+    radius: 7, color: '#fff', weight: 2,
+    fillColor: color, fillOpacity: 1
+  }).addTo(map).bindPopup(`<b>${p.name}</b><br>Start: ${p.from}`);
+
+  // markery przystanków
+  const stopMarkers = p.stops.map(s =>
+    L.circleMarker(s.coords, {
+      radius: 5, color: '#fff', weight: 2,
+      fillColor: color, fillOpacity: 0.9
+    }).addTo(map).bindPopup(`Przystanek: ${s.name}`)
+  );
+
+  routes[p.name] = { line, startMarker, stopMarkers, color };
+});
+
+// dopasuj widok do wszystkich punktów
+if (allLatLngs.length > 1){
+  map.fitBounds(L.latLngBounds(allLatLngs).pad(0.15));
+}
+
+/* =========================================================
+   5) PODŚWIETLANIE TRASY przy najechaniu na wiersz
+========================================================= */
+function highlightRoute(name, on){
+  const r = routes[name];
+  if (!r) return;
+  if (on){
+    r.line.setStyle({ weight: 8, opacity: 1 });
+    r.line.bringToFront();
+    r.startMarker.setStyle({ radius: 10 });
+    r.stopMarkers.forEach(m => m.setStyle({ radius: 8 }));
+  } else {
+    r.line.setStyle({ weight: 4, opacity: 0.75 });
+    r.startMarker.setStyle({ radius: 7 });
+    r.stopMarkers.forEach(m => m.setStyle({ radius: 5 }));
+  }
+}
+
+/* =========================================================
+   6) RENDER TABELI
+========================================================= */
+const EMOJI = { mail: "📧", phone: "📞" };
+const IMG_DISCORD = "https://cdn3.emoji.gg/emojis/2372-discord-clyde-dark.png";
+const IMG_WHATSAPP = "https://cdn3.emoji.gg/emojis/68016-whatsapp-icon.png";
+
+const tbody = document.getElementById('participants-body');
+
+participants.forEach(p => {
+  const color = p._color;
+  const tr = document.createElement('tr');
+  // delikatne tło wiersza w kolorze uczestnika
+  tr.style.background = `linear-gradient(90deg, ${color}22, transparent)`;
+
+  // kontakt
+  const c = p.contact || {};
+  let contactHtml = '<div class="contact-cell">';
+  if (c.email)    contactHtml += `<a href="mailto:${c.email}">${EMOJI.mail} ${c.email}</a>`;
+  if (c.phone)    contactHtml += `<a href="tel:${c.phone.replace(/\s/g,'')}">${EMOJI.phone} ${c.phone}</a>`;
+  if (c.discord)  contactHtml += `<span><img src="${IMG_DISCORD}" alt="discord"> ${c.discord}</span>`;
+  if (c.whatsapp) contactHtml += `<a href="https://wa.me/${c.whatsapp.replace(/\D/g,'')}" target="_blank" rel="noopener"><img src="${IMG_WHATSAPP}" alt="whatsapp"> WhatsApp</a>`;
+  contactHtml += '</div>';
+
+  const stopsTxt = p.stops.length ? p.stops.map(s => s.name).join(', ') : '—';
+
+  tr.innerHTML = `
+    <td><div class="who"><span class="dot" style="background:${color}"></span>${p.name}</div></td>
+    <td>${p.from}</td>
+    <td class="stops">${stopsTxt}</td>
+    <td>${p.car}</td>
+    <td>${p.from_date}</td>
+    <td>${p.to_date}</td>
+    <td>${contactHtml}</td>
+  `;
+
+  tr.addEventListener('mouseenter', () => highlightRoute(p.name, true));
+  tr.addEventListener('mouseleave', () => highlightRoute(p.name, false));
+
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>
