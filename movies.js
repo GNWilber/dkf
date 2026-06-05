@@ -226,4 +226,12 @@ const MOVIES = [
     date: "12.06.2026",
     flag: "🇷🇺"
   },
+  {
+    name: "Magnolia",
+    altName: "",
+    year: 1999,
+    filmweb: "https://www.filmweb.pl/film/Magnolia-1999-873",
+    date: "19.06.2026",
+    flag: "🇺🇸"
+  },
 ];
