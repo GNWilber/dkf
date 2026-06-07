@@ -88,19 +88,14 @@
     pointer-events: none;
   }
 
-  /* Decorative grid lines */
-  header.hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
+  .hero-inner { 
+    position: relative; 
+    z-index: 1; 
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-
-  .hero-inner { position: relative; z-index: 1; }
 
   .hero-badge {
     display: inline-flex;
@@ -157,6 +152,7 @@
   .hero-dates {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
     margin-top: 26px;
   }
@@ -354,10 +350,16 @@
     gap: 6px;
     font-weight: 600;
     padding: 2px 0;
-    transition: color .15s;
+    border-bottom: 2px dashed var(--green-700);
+    width: fit-content;
+    transition: color .15s, border-color .15s;
   }
 
-  .contact-cell a:hover { color: var(--green-500); }
+  .contact-cell a:hover { 
+    color: var(--green-500); 
+    border-bottom-style: solid;
+    border-bottom-color: var(--green-500);
+  }
   .contact-cell img { width: 20px; height: 20px; vertical-align: middle; }
 
   .stops-list {
