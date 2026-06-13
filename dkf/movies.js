@@ -232,14 +232,7 @@ const MOVIES = [
     date: "29.05.2026",
     flag: "🇷🇺 🇯🇵"
   },
-  // {
-  //   name: "Az ember tragédiája",
-  //   altName: "Tragedia człowieka",
-  //   year: 2011,
-  //   filmweb: "https://www.filmweb.pl/film/Tragedia+cz%C5%82owieka-2011-643034",
-  //   date: "05.06.2026",
-  //   flag: "🇭🇺"
-  // },
+  
   {
     name: "Arashi no Yoru ni",
     altName: "Stormy Night",
@@ -263,5 +256,13 @@ const MOVIES = [
     filmweb: "https://www.filmweb.pl/film/Magnolia-1999-873",
     date: "19.06.2026",
     flag: "🇺🇸"
+  },
+  {
+    name: "Az ember tragédiája",
+    altName: "Tragedia człowieka",
+    year: 2011,
+    filmweb: "https://www.filmweb.pl/film/Tragedia+cz%C5%82owieka-2011-643034",
+    date: "03.07.2026",
+    flag: "🇭🇺"
   },
 ];
