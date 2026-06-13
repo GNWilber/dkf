@@ -325,17 +325,22 @@ function render() {
   // Collect countries present in archive that exist in COUNTRIES list
   function buildCountryFilter() {
     const present = new Set();
+    const flagCount = new Map();
     archiveMovies.forEach(m => extractFlags(m).forEach(f => {
-      if (COUNTRIES[f]) present.add(f);
+      if (COUNTRIES[f]) {
+        present.add(f);
+        flagCount.set(f, (flagCount.get(f) || 0) + 1);
+      }
     }));
     countriesEl.innerHTML = "";
     if (present.size === 0) return;
     [...present].forEach(flag => {
+      const count = flagCount.get(flag) || 0;
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "country-chip";
       btn.title = COUNTRIES[flag];
-      btn.innerHTML = `<span class="country-flag">${flag}</span>`;
+      btn.innerHTML = `<span class="country-flag">${flag}</span><span class="country-count">${count}</span>`;
       btn.addEventListener("click", () => {
         if (selectedCountries.has(flag)) {
           selectedCountries.delete(flag);
