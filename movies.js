@@ -1,0 +1,469 @@
+// DANE FILMÓW — edytuj tutaj, aby dodać lub usunąć filmy. FORMAT DATY: DD.MM.YYYY
+// {
+//   name: "",
+//   altName: "",
+//   year: ,
+//   filmweb: "",
+//   date: ".2026",
+//   flag: ""
+// },
+
+const ANNOUNCEMENT = "Klubik 25.09 odwołany :(";
+const ANNOUNCEMENT_EXPIRY = "01.10.2026";
+const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1543581416141623317/Screenshot_2026-08-30_at_13-21-05_Dyskusyjny_Klub_Filmowy.png?ex=6a9563b7&is=6a941237&hm=d85e6f0863533f4d8b0d7d0d25cb2e9fa594a257284867144d5e71695288c0bc&animated=true";
+// Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/
+
+// Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
+const COUNTRIES = {
+  "🇵🇱": "Polska",
+  "🇺🇸": "USA",
+  "🇬🇧": "Wielka Brytania",
+  "🇫🇷": "Francja",
+  "🇩🇪": "Niemcy",
+  "🇮🇹": "Włochy",
+  "🇪🇸": "Hiszpania",
+  "🇯🇵": "Japonia",
+  "🇰🇷": "Korea Płd.",
+  "🇷🇺": "Rosja",
+  "🇨🇿": "Czechy",
+  "🇸🇪": "Szwecja",
+  "🇩🇰": "Dania",
+  "🇧🇪": "Belgia",
+  "🇱🇻": "Łotwa",
+  "🇦🇺": "Australia",
+  "🇨🇦": "Kanada",
+  "🇮🇳": "Indie",
+  "🇨🇳": "Chiny",
+  "🇧🇷": "Brazylia",
+  "🇲🇽": "Meksyk",
+  "🇦🇷": "Argentyna",
+  "🇮🇷": "Iran",
+  "🇳🇴": "Norwegia",
+  "🇫🇮": "Finlandia",
+  "🇳🇱": "Holandia",
+  "🇦🇹": "Austria",
+  "🇨🇭": "Szwajcaria",
+  "🇵🇹": "Portugalia",
+  "🇬🇷": "Grecja",
+  "🇭🇺": "Węgry",
+  "🇮🇪": "Irlandia"
+};
+  
+const MOVIES = [
+  {
+    name: "Good Fortune",
+    altName: "Anioł Stróż",
+    year: 2025,
+    filmweb: "https://www.filmweb.pl/film/Anio%C5%82+str%C3%B3%C5%BC-2025-10065014",
+    date: "28.11.2025",
+    flag: "🇺🇸",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/r83HIGA0mUiy7I9qVr17pF7SCDP.jpg"
+  },
+  {
+    name: "Straume",
+    altName: "Flow",
+    year: 2024,
+    filmweb: "https://www.filmweb.pl/film/Flow-2024-10052360",
+    date: "19.12.2025",
+    flag: "🇱🇻 🇫🇷 🇧🇪",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/5S4pvKFj2bT0PcFNLidnAWocsKU.jpg"
+  },
+  {
+    name: "Hacksaw Ridge",
+    altName: "Przełęcz ocalonych",
+    year: 2016,
+    filmweb: "https://www.filmweb.pl/film/Prze%C5%82%C4%99cz+ocalonych-2016-658802",
+    date: "02.01.2026",
+    flag: "🇺🇸 🇦🇺",
+    author: "@Artur",
+    poster: "https://image.tmdb.org/t/p/original/wuz8TjCIWR2EVVMuEfBnQ1vuGS3.jpg"
+  },
+  {
+    name: "Lucky",
+    altName: "Szczęściarz",
+    year: 2017,
+    filmweb: "https://www.filmweb.pl/film/Szcz%C4%99%C5%9Bciarz-2017-790376",
+    date: "09.01.2026",
+    flag: "🇺🇸",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/fy2K8jqCV9rNC8fHx9muPJTNaqs.jpg"
+  },
+  {
+    name: "It's a Wonderful Life",
+    altName: "To wspaniałe życie",
+    year: 1946,
+    filmweb: "https://www.filmweb.pl/film/To+wspania%C5%82e+%C5%BCycie-1946-31793",
+    date: "16.01.2026",
+    flag: "🇺🇸",
+    author: "@Artur",
+    poster: "https://image.tmdb.org/t/p/original/bSqt9rhDZx1Q7UZ86dBPKdNomp2.jpg"
+  },
+  {
+    name: "Ginga Tetsudō no Yoru",
+    altName: "Night on the Galactic Railroad",
+    year: 1985,
+    filmweb: "https://www.filmweb.pl/film/Kenji+Miyazawa%27s+Night+on+the+Galactic+Railroad-1985-169073",
+    date: "23.01.2026",
+    flag: "🇯🇵",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/ue4dFVJa3bBZUSRIuBxuPWvM663.jpg"
+  },
+  {
+    name: "Inside Out",
+    altName: "W głowie się nie mieści",
+    year: 2015,
+    filmweb: "https://www.filmweb.pl/film/W+g%C5%82owie+si%C4%99+nie+mie%C5%9Bci-2015-682170",
+    date: "30.01.2026",
+    flag: "🇺🇸",
+    author: "@Artur",
+    poster: "https://image.tmdb.org/t/p/original/2H1TmgdfNtsKlU9jKdeNyYL5y8T.jpg"
+  },
+  {
+    name: "Kanashimi no Beradonna",
+    altName: "Belladonna Smutku",
+    year: 1973,
+    filmweb: "https://www.filmweb.pl/film/Belladonna+smutku-1973-128976",
+    date: "13.02.2026",
+    flag: "🇯🇵",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/4U9Bbc7UqvKahDV0ZELaASBLNLh.jpg"
+  },
+  {
+    name: "The Last Samurai",
+    altName: "Ostatni Samuraj",
+    year: 2003,
+    filmweb: "https://www.filmweb.pl/film/Ostatni+samuraj-2003-36447",
+    date: "20.02.2026",
+    flag: "🇺🇸 🇯🇵 🇳🇿",
+    author: "@Artur",
+    poster: "https://image.tmdb.org/t/p/original/a8jmJPs5eZBARmnuEEvZwbjwyz4.jpg"
+  },
+  {
+    name: "Relatos salvajes",
+    altName: "Dzikie historie",
+    year: 2014,
+    filmweb: "https://www.filmweb.pl/film/Dzikie+historie-2014-689545",
+    date: "27.02.2026",
+    flag: "🇦🇷 🇪🇸 🇫🇷 🇬🇧",
+    author: "@Kornel",
+    poster: "https://image.tmdb.org/t/p/original/vimbRR5XdkMj7CqnzVN92Cla8jN.jpg"
+  },
+  {
+    name: "Inside Out 2",
+    altName: "W głowie się nie mieści 2",
+    year: 2024,
+    filmweb: "https://www.filmweb.pl/film/W+g%C5%82owie+si%C4%99+nie+mie%C5%9Bci+2-2024-10019716",
+    date: "06.03.2026",
+    flag: "🇺🇸",
+    author: "@Artur",
+    poster: "https://image.tmdb.org/t/p/original/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg"
+  },
+  {
+    name: "Fantastic Mr. Fox",
+    altName: "Fantastyczny Pan Lis",
+    year: 2009,
+    filmweb: "https://www.filmweb.pl/film/Fantastyczny+Pan+Lis-2009-156466",
+    date: "13.03.2026",
+    flag: "🇺🇸",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/hhhJN8aJdTlzGmARCbwWflHXhwI.jpg"
+  },
+  {
+    name: "Dream Productions",
+    altName: "Wytwórnia filmowa Śpioch",
+    year: 2024,
+    filmweb: "https://www.filmweb.pl/serial/Wytw%C3%B3rnia+filmowa+%C5%9Apioch-2024-10058711",
+    date: "20.03.2026",
+    flag: "🇺🇸",
+    author: "@Artur",
+    poster: "https://image.tmdb.org/t/p/original/j9jz5wZlQoq65YuYPNauB72uvFJ.jpg"
+  },
+  {
+    name: "千年女優",
+    altName: "Millennium Actress",
+    year: 2001,
+    filmweb: "https://www.filmweb.pl/film/Millennium+Actress-2001-104796",
+    date: "27.03.2026",
+    flag: "🇯🇵",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/iVNCVWAqBSDU0MJCq1ehAIGifev.jpg"
+  },
+  {
+    name: "Le Locataire",
+    altName: "Lokator",
+    year: 1976,
+    filmweb: "https://www.filmweb.pl/film/Lokator-1976-7194",
+    date: "03.04.2026",
+    flag: "🇫🇷",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/a6dXCuMaaTaNLyPRxoaH9lGeiqD.jpg"
+  },
+  {
+    name: "Druk",
+    altName: "Na rauszu",
+    year: 2020,
+    filmweb: "https://www.filmweb.pl/film/Na+rauszu-2020-838872",
+    date: "10.04.2026",
+    flag: "🇧🇪 🇩🇰 🇫🇷 🇳🇱 🇸🇪",
+    author: "@Nicramus",
+    poster: "https://image.tmdb.org/t/p/original/2GIHLUjKfGgrqoP5F1WxBwG62HO.jpg"
+  },
+  {
+    name: "Forrest Gump",
+    altName: "",
+    year: 1994,
+    filmweb: "https://www.filmweb.pl/film/Forrest+Gump-1994-998",
+    date: "17.04.2026",
+    flag: "🇺🇸",
+    author: "@Artur",
+    poster: "https://image.tmdb.org/t/p/original/Cw4hIUIAmSYfK9QfaUW5igp9La.jpg"
+  },
+  {
+    name: "Penguin's Memory: Shiawase monogatari",
+    altName: "",
+    year: 1985,
+    filmweb: "https://www.filmweb.pl/film/Penguin's+Memory+Shiawase+monogatari-1985-557033",
+    date: "24.04.2026",
+    flag: "🇯🇵",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/yT3s48cvroHTJKdaVhLfwzYjE79.jpg"
+  },
+  {
+    name: "The Big Lebowski",
+    altName: "",
+    year: 1998,
+    filmweb: "https://www.filmweb.pl/film/Big+Lebowski-1998-13",
+    date: "01.05.2026",
+    flag: "🇺🇸",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/3bv6WAp6BSxxYvB5ozKFUYuRA8C.jpg"
+  },
+  {
+    name: "Czeka na nas świat",
+    altName: "",
+    year: 2006,
+    filmweb: "https://www.filmweb.pl/film/Czeka+na+nas+%C5%9Bwiat-2006-113155",
+    date: "08.05.2026",
+    flag: "🇵🇱",
+    author: "@Hiszpan",
+    poster: "https://image.tmdb.org/t/p/original/v7NiRyWfXDas0OKsWkIkDVKokXX.jpg"
+  },
+  {
+    name: "サマーウォーズ",
+    altName: "Summer Wars",
+    year: 2009,
+    filmweb: "https://www.filmweb.pl/film/Summer+Wars-2009-507454",
+    date: "15.05.2026",
+    flag: "🇯🇵",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/oPfHwvIw9q7EKFHXFgKpg2QRGwa.jpg"
+  },
+  {
+    name: "Beau Is Afraid",
+    altName: "Bo się boi",
+    year: 2023,
+    filmweb: "https://www.filmweb.pl/film/Bo+si%C4%99+boi-2023-10003754",
+    date: "22.05.2026",
+    flag: "🇺🇸",
+    author: "@Adam",
+    poster: "https://www.themoviedb.org/t/p/w1280/wgVkkjigF31r1nZV80uV0xNIoun.jpg"
+  },
+  {
+    name: "Дерсу Узала",
+    altName: "Dersu Uzała",
+    year: 1975,
+    filmweb: "https://www.filmweb.pl/film/Dersu+Uza%C5%82a-1975-34074",
+    date: "29.05.2026",
+    flag: "🇷🇺 🇯🇵",
+    author: "@Hiszpan",
+    poster: "https://image.tmdb.org/t/p/original/5spuFV33LZc7NlDRfBskmPkcGqY.jpg"
+  },
+  
+  {
+    name: "あらしのよるに",
+    altName: "Stormy Night",
+    year: 2005,
+    filmweb: "https://www.filmweb.pl/film/Arashi+no+Yoru+ni-2005-215371",
+    date: "05.06.2026",
+    flag: "🇯🇵",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/lyP68W6cQRZSOSygTsvV3s6fsRA.jpg"
+  },
+  {
+    name: "Возвращение",
+    altName: "Powrót",
+    year: 2003,
+    filmweb: "https://www.filmweb.pl/film/Powr%C3%B3t-2003-107697",
+    date: "12.06.2026",
+    flag: "🇷🇺",
+    author: "@Martin",
+    poster: "https://image.tmdb.org/t/p/original/lxOe6eldTPT8v6IbTOyhmGOBlAK.jpg"
+  },
+  {
+    name: "Magnolia",
+    altName: "",
+    year: 1999,
+    filmweb: "https://www.filmweb.pl/film/Magnolia-1999-873",
+    date: "19.06.2026",
+    flag: "🇺🇸",
+    author: "@Hiszpan",
+    poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/tpfC325Jk6S38VTe5dDWjWtoyxr.jpg"
+  },
+  {
+    name: "Az ember tragédiája",
+    altName: "Tragedia człowieka",
+    year: 2011,
+    filmweb: "https://www.filmweb.pl/film/Tragedia+cz%C5%82owieka-2011-643034",
+    date: "10.07.2026",
+    flag: "🇭🇺",
+    author: "@Damian",
+    poster: "https://www.themoviedb.org/t/p/w1280/mAVOj2Lr7BwuGPVrqRxAJI558EJ.jpg"
+  },
+  {
+    name: "Adams æbler",
+    altName: "Jabłka Adama",
+    year: 2005,
+    filmweb: "https://www.filmweb.pl/film/Jab%C5%82ka+Adama-2005-4313",
+    date: "03.07.2026",
+    flag: "🇩🇰 🇩🇪",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/6RNmgq0UKvPuzLI6iY81ugLhjw2.jpg"
+  },
+  {
+    name: "How to Lose Friends & Alienate People",
+    altName: "Jak stracić przyjaciół i zrazić do siebie ludzi",
+    year: 2008,
+    filmweb: "https://www.filmweb.pl/film/Jak+straci%C4%87+przyjaci%C3%B3%C5%82+i+zrazi%C4%87+do+siebie+ludzi-2008-300339",
+    date: "26.06.2026",
+    flag: "🇬🇧",
+    author: "@Łukasz",
+    poster: "https://www.themoviedb.org/t/p/w1280/8Xd1mO861aK2OirTbxZrODNhihW.jpg"
+  },
+  {
+    name: "Mój własny wróg",
+    altName: "Enemy Mine",
+    year: 1985,
+    filmweb: "https://www.filmweb.pl/film/M%C3%B3j+w%C5%82asny+wr%C3%B3g-1985-7800",
+    date: "24.07.2026",
+    flag: "🇺🇸 🇬🇧 🇩🇪",
+    author: "@Hiszpan",
+    poster: "https://www.themoviedb.org/t/p/w1280/a3dr9L8VIjhEvivzQ2M12VQDere.jpg"
+  },
+  {
+    name: "The Shining",
+    altName: "Lśnienie",
+    year: 1980,
+    filmweb: "https://www.filmweb.pl/film/L%C5%9Bnienie-1980-1020",
+    date: "31.07.2026",
+    flag: "🇺🇸 🇬🇧",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/b6ko0IKC8MdYBBPkkA1aBPLe2yz.jpg"
+  },
+  {
+    name: "1984",  
+    year: 1984,
+    filmweb: "https://www.filmweb.pl/film/1984-1984-3476",
+    date: "07.08.2026",
+    flag: "🇬🇧",
+    author: "@Łukasz",
+    poster: "https://image.tmdb.org/t/p/original/wjGJaegH7ypyzyXhTaAQgObsREG.jpg"
+  },  
+  {
+    name: "Synecdoche, New York",  
+    year: 2008,
+    filmweb: "https://www.filmweb.pl/film/Synekdocha%2C+Nowy+Jork-2008-166290",
+    date: "14.08.2026",
+    flag: "🇺🇸",
+    author: "@Adam",
+    poster: "https://www.themoviedb.org/t/p/w1280/5UwdhrjXhUgsiDhe1dpS9z4yj7q.jpg"
+  },    
+  {
+    name: "化け猫あんずちゃん",  
+    altName: "Anzu. Kot-duch",
+    year: 2024,
+    filmweb: "https://www.filmweb.pl/film/Anzu.+Kot+duch-2024-10052044",
+    date: "21.08.2026",
+    flag: "🇯🇵 🇫🇷",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/nPxYNExVI2MfVIAU2ktPqzY11Tu.jpg"
+  },  
+  {
+    name: "Three Billboards Outside Ebbing, Missouri",  
+    altName: "Trzy billboardy za Ebbing, Missouri",
+    year: 2017,
+    filmweb: "https://www.filmweb.pl/film/Trzy+billboardy+za+Ebbing%2C+Missouri-2017-767406",
+    date: "28.08.2026",
+    flag: "🇺🇸 🇬🇧",
+    author: "@Kornel",
+    poster: "https://www.themoviedb.org/t/p/w1280/bRYLt8fV82tdVoDppSFTZIcJiLN.jpg"
+  },
+  {
+    name: "Blue Velvet",  
+    year: 1986,
+    filmweb: "https://www.filmweb.pl/film/Blue+Velvet-1986-1085",
+    date: "04.09.2026",
+    flag: "🇺🇸",
+    author: "@Hiszpan",
+    poster: "https://www.themoviedb.org/t/p/w1280/6v1zYh2FKOYVddY5pCQhd4PO9uX.jpg"
+  },  
+  {
+    name: "Gosti iz galaksije",  
+    altName: "Goście z galaktyki Arkana",
+    year: 1981,
+    filmweb: "https://www.filmweb.pl/film/Go%C5%9Bcie+z+galaktyki+Arkana-1981-127085",
+    date: "11.09.2026",
+    flag: "🇨🇿",
+    author: "@Martin",
+    poster: "https://image.tmdb.org/t/p/original/7aGmnitbGVuQw0MOwILs90UZOew.jpg"
+  },
+  {
+    name: "The Phantom of the Opera",  
+    altName: "Upiór w operze",
+    year: 2004,
+    filmweb: "https://www.filmweb.pl/film/Upi%C3%B3r+w+operze-2004-106461",
+    date: "18.09.2026",
+    flag: "🇺🇸 🇬🇧",
+    author: "@Damian",
+    poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/aTsp2VTaCBiGs8w05OTXfD97FRZ.jpg"
+  },
+  {
+    name: "The Matrix",  
+    year: 1999,
+    filmweb: "https://www.filmweb.pl/film/Matrix-1999-628",
+    date: "02.10.2026",
+    flag: "🇺🇸 🇦🇺",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg"
+  },
+  {
+    name: "Fight Club",  
+    altName: "Podziemny krąg",
+    year: 1999,
+    filmweb: "https://www.filmweb.pl/film/Podziemny+kr%C4%85g-1999-837",
+    date: "09.10.2026",
+    flag: "🇺🇸 🇩🇪",
+    author: "@Nieznajomy",
+    poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg"
+  },
+  {
+    name: "Savior",  
+    altName: "Wybawca",
+    year: 1998,
+    filmweb: "https://www.filmweb.pl/film/Wybawca-1998-9368",
+    date: "16.10.2026",
+    flag: "🇺🇸",
+    author: "@Sławek",
+    poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/7qMfDjUTEvLg5640CUAddk2BNpG.jpg"
+  },
+  {
+    name: "Nóż w wodzie",  
+    year: 1961,
+    filmweb: "https://www.filmweb.pl/film/N%C3%B3%C5%BC+w+wodzie-1961-894",
+    date: "23.10.2026",
+    flag: "🇵🇱",
+    author: "@Nicramus",
+    poster: "https://image.tmdb.org/t/p/original/445jMzx1yi5dvCwyO2HL2BqkxBA.jpg"
+  },  
+];
