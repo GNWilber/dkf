@@ -497,7 +497,7 @@ const MOVIES = [
     poster: "https://image.tmdb.org/t/p/original/7k0fr2xLCTChjN8MnGNThTP9uEB.jpg"
   },
   {
-    name: "Gi-saeng-chung",
+    name: "기생충",
     altName: "Parasite",  
     year: 2019,
     filmweb: "https://www.filmweb.pl/film/Parasite-2019-798143",
