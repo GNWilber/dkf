@@ -10,7 +10,7 @@
 
 const ANNOUNCEMENT = "Klubik 25.09 odwołany :(";
 const ANNOUNCEMENT_EXPIRY = "01.10.2026";
-const BANNER = "https://media.discordapp.net/attachments/1447411841562181652/1549491123200729299/banner.png?ex=6aaae38f&is=6aa9920f&hm=c5b370d97673565cb40bc4d768410455d4d2985e4bab36802b87e36fabaed500&animated=true";
+const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1563695422034153613/image.png?ex=6ade9058&is=6add3ed8&hm=d0006761183d6dd121b45e6d78cf5293d6178128a4c5ccdbf1ada0cc19ed74c0&animated=true";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
@@ -466,4 +466,44 @@ const MOVIES = [
     author: "@Nicramus",
     poster: "https://image.tmdb.org/t/p/original/445jMzx1yi5dvCwyO2HL2BqkxBA.jpg"
   },  
+  {
+    name: "Hundraåringen som klev ut genom fönstret och försvann",  
+    altName: "Stulatek, który wyskoczył przez okno i zniknął",
+    year: 2013,
+    filmweb: "https://www.filmweb.pl/film/Stulatek%2C+kt%C3%B3ry+wyskoczy%C5%82+przez+okno+i+znikn%C4%85%C5%82-2013-666735",
+    date: "30.10.2026",
+    flag: "🇸🇪 🇫🇷 🇪🇸 🇷🇺 🇬🇧",
+    author: "@Kornel",
+    poster: "https://image.tmdb.org/t/p/original/hTqnT1GGbOy8HIjNBRpOWKiE7Ld.jpg"
+  },
+  {
+    name: "True Romance",  
+    altName: "Prawdziwy romans",
+    year: 1993,
+    filmweb: "https://www.filmweb.pl/film/Prawdziwy+romans-1993-8858",
+    date: "06.11.2026",
+    flag: "🇺🇸 🇫🇷",
+    author: "@Hiszpan",
+    poster: "https://www.themoviedb.org/t/p/w600_and_h900_face/39lXk6ud6KiJgGbbWI2PUKS7y2.jpg"
+  },
+  {
+    name: "The Hunchback of Notre Dame",  
+    altName: "Dzwonnik z Notre Dame",
+    year: 1996,
+    filmweb: "https://www.filmweb.pl/film/Dzwonnik+z+Notre+Dame-1996-5319",
+    date: "13.11.2026",
+    flag: "🇺🇸",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/7k0fr2xLCTChjN8MnGNThTP9uEB.jpg"
+  },
+  {
+    name: "Gi-saeng-chung",
+    altName: "Parasite",  
+    year: 2019,
+    filmweb: "https://www.filmweb.pl/film/Parasite-2019-798143",
+    date: "20.11.2026",
+    flag: "🇰🇷",
+    author: "@Nicramus",
+    poster: "https://image.tmdb.org/t/p/original/jjHccoFjbqlfr4VGLVLT7yek0Xn.jpg"
+  },
 ];
