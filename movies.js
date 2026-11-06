@@ -10,7 +10,7 @@
 
 const ANNOUNCEMENT = "Klubik 25.09 odwołany :(";
 const ANNOUNCEMENT_EXPIRY = "01.10.2026";
-const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1563695422034153613/image.png?ex=6ade9058&is=6add3ed8&hm=d0006761183d6dd121b45e6d78cf5293d6178128a4c5ccdbf1ada0cc19ed74c0&animated=true";
+const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1568366381127303371/image.png?ex=6aef8e84&is=6aee3d04&hm=19c07e3cb3f85187dd9c9c6fd1a1df5ac8a8cc19678e94fbf2748e426507adb4&animated=true";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
@@ -497,11 +497,20 @@ const MOVIES = [
     poster: "https://image.tmdb.org/t/p/original/7k0fr2xLCTChjN8MnGNThTP9uEB.jpg"
   },
   {
+    name: "Amator",
+    year: 1979,
+    filmweb: "https://www.filmweb.pl/film/Amator-1979-3808",
+    date: "20.11.2026",
+    flag: "🇵🇱",
+    author: "@Adam",
+    poster: "https://image.tmdb.org/t/p/original/sOroQAyMj1aGwzCgf9GAp3RmUmm.jpg"
+  },
+  {
     name: "기생충",
     altName: "Parasite",  
     year: 2019,
     filmweb: "https://www.filmweb.pl/film/Parasite-2019-798143",
-    date: "20.11.2026",
+    date: "27.11.2026",
     flag: "🇰🇷",
     author: "@Nicramus",
     poster: "https://image.tmdb.org/t/p/original/jjHccoFjbqlfr4VGLVLT7yek0Xn.jpg"
