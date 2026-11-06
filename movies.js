@@ -10,7 +10,7 @@
 
 const ANNOUNCEMENT = "Klubik 25.09 odwołany :(";
 const ANNOUNCEMENT_EXPIRY = "01.10.2026";
-const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1568366381127303371/image.png?ex=6aef8e84&is=6aee3d04&hm=19c07e3cb3f85187dd9c9c6fd1a1df5ac8a8cc19678e94fbf2748e426507adb4&animated=true";
+const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1568412632396865606/image.png?ex=6aefb997&is=6aee6817&hm=740b017763a374493659176f8ded0e7b3cbc78a468ef064848a399934989cd18&animated=true";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
@@ -497,13 +497,14 @@ const MOVIES = [
     poster: "https://image.tmdb.org/t/p/original/7k0fr2xLCTChjN8MnGNThTP9uEB.jpg"
   },
   {
-    name: "Amator",
-    year: 1979,
-    filmweb: "https://www.filmweb.pl/film/Amator-1979-3808",
+    name: "Yōjinbō",
+    altName: "Straż przyboczna",
+    year: 1961,
+    filmweb: "https://www.filmweb.pl/film/Stra%C5%BC+przyboczna-1961-31445",
     date: "20.11.2026",
-    flag: "🇵🇱",
+    flag: "🇯🇵",
     author: "@Adam",
-    poster: "https://image.tmdb.org/t/p/original/sOroQAyMj1aGwzCgf9GAp3RmUmm.jpg"
+    poster: "https://image.tmdb.org/t/p/original/BaAnsRLrglRYCDk1YFulsyZJ8T.jpg"
   },
   {
     name: "기생충",
@@ -515,4 +516,13 @@ const MOVIES = [
     author: "@Nicramus",
     poster: "https://image.tmdb.org/t/p/original/jjHccoFjbqlfr4VGLVLT7yek0Xn.jpg"
   },
+  // {
+  //   name: "Amator",
+  //   year: 1979,
+  //   filmweb: "https://www.filmweb.pl/film/Amator-1979-3808",
+  //   date: "20.11.2026",
+  //   flag: "🇵🇱",
+  //   author: "@Adam",
+  //   poster: "https://image.tmdb.org/t/p/original/sOroQAyMj1aGwzCgf9GAp3RmUmm.jpg"
+  // },
 ];
