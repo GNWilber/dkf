@@ -516,6 +516,8 @@ const MOVIES = [
     author: "@Nicramus",
     poster: "https://image.tmdb.org/t/p/original/jjHccoFjbqlfr4VGLVLT7yek0Xn.jpg"
   },
+
+];
   // {
   //   name: "Amator",
   //   year: 1979,
@@ -525,4 +527,3 @@ const MOVIES = [
   //   author: "@Adam",
   //   poster: "https://image.tmdb.org/t/p/original/sOroQAyMj1aGwzCgf9GAp3RmUmm.jpg"
   // },
-];
