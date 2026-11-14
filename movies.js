@@ -10,7 +10,7 @@
 
 const ANNOUNCEMENT = "Klubik 25.09 odwołany :(";
 const ANNOUNCEMENT_EXPIRY = "01.10.2026";
-const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1568412632396865606/image.png?ex=6aefb997&is=6aee6817&hm=740b017763a374493659176f8ded0e7b3cbc78a468ef064848a399934989cd18&animated=true";
+const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1570975373686997166/image.png?ex=6af90c54&is=6af7bad4&hm=d198efe4e4da2ef640beceb8c6837cdf3a43da8a49ad6cff1fe16e7bd5854efc&animated=true";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
@@ -501,7 +501,7 @@ const MOVIES = [
     altName: "Straż przyboczna",
     year: 1961,
     filmweb: "https://www.filmweb.pl/film/Stra%C5%BC+przyboczna-1961-31445",
-    date: "20.11.2026",
+    date: "27.11.2026",
     flag: "🇯🇵",
     author: "@Adam",
     poster: "https://image.tmdb.org/t/p/original/BaAnsRLrglRYCDk1YFulsyZJ8T.jpg"
@@ -511,10 +511,19 @@ const MOVIES = [
     altName: "Parasite",  
     year: 2019,
     filmweb: "https://www.filmweb.pl/film/Parasite-2019-798143",
-    date: "27.11.2026",
+    date: "04.12.2026",
     flag: "🇰🇷",
     author: "@Nicramus",
     poster: "https://image.tmdb.org/t/p/original/jjHccoFjbqlfr4VGLVLT7yek0Xn.jpg"
+  },
+  {
+    name: "Casablanca",
+    year: 1942,
+    filmweb: "https://www.filmweb.pl/film/Casablanca-1942-905",
+    date: "20.11.2026",
+    flag: "🇺🇸",
+    author: "@Martin",
+    poster: "https://image.tmdb.org/t/p/original/lGCEKlJo2CnWydQj7aamY7s1S7Q.jpg"
   },
 
 ];
