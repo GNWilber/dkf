@@ -10,7 +10,7 @@
 
 const ANNOUNCEMENT = "Klubik 25.09 odwołany :(";
 const ANNOUNCEMENT_EXPIRY = "01.10.2026";
-const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1570975373686997166/image.png?ex=6af90c54&is=6af7bad4&hm=d198efe4e4da2ef640beceb8c6837cdf3a43da8a49ad6cff1fe16e7bd5854efc&animated=true";
+const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1570996341402898592/image.png?ex=6af91fdb&is=6af7ce5b&hm=843f66292c89bbac681a64ead87dbf9e3d26bd37716b3d7af89e86608b371434&animated=true";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
