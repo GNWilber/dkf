@@ -2,34 +2,41 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Dyskusyjny Klub Filmowy</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="description" content="Dyskusyjny Klub Filmowy — spotkania w piątki o 19:00, nadchodzące seanse, archiwum omówionych filmów i ranking klubowy." />
+  <meta name="theme-color" content="#0c0b09" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Dyskusyjny Klub Filmowy" />
+  <meta property="og:description" content="Spotkania w piątki o 19:00 — nadchodzące seanse, archiwum filmów i ranking klubowy." />
+  <meta property="og:url" content="https://dkf.odwyk.com/" />
+  <meta property="og:image" content="https://dkf.odwyk.com/favicon.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Barlow:wght@300;400;500;600&family=Google+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@400;500&family=Barlow:wght@300;400&family=Google+Sans:wght@500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <div class="grain-overlay"></div>
+  <div class="grain-overlay" aria-hidden="true"></div>
 
   <header>
     <div class="header-inner">
-      <div class="header-logo">
+      <h1 class="header-logo">
         <span class="logo-dkf">DKF</span>
-        <div class="logo-divider"></div>
-        <div class="logo-text"><span class="logo-full">Piątek 19:00</span></div>
-      </div>
+        <span class="logo-divider" aria-hidden="true"></span>
+        <span class="logo-text"><span class="logo-full">Piątek 19:00</span></span>
+      </h1>
     </div>
   </header>
 
   <main>
-    <section class="upcoming-section">
+    <section class="upcoming-section" aria-label="Nadchodzące spotkania">
       <div class="section-label">
-        <span class="label-line"></span>
-        <span class="label-text" id="label-upcoming" data-hint="Skopiuj listę nadchodzących spotkań">Nadchodzące spotkania</span>
-        <span class="label-line"></span>
+        <span class="label-line" aria-hidden="true"></span>
+        <button type="button" class="label-text" id="label-upcoming" data-hint="Skopiuj listę nadchodzących spotkań">Nadchodzące spotkania</button>
+        <span class="label-line" aria-hidden="true"></span>
       </div>
 
       <div class="cards-grid" id="upcoming-cards"></div>
@@ -39,35 +46,50 @@
       </div>
     </section>
 
-    <section class="download-section">
+    <section class="download-section" aria-label="Pobieranie filmów">
       <div class="section-label">
-        <span class="label-line"></span>
-        <a class="label-text label-link" href="https://drive.google.com/drive/folders/1pQmbtr6OxSjRZ9QuECT4Y2iY_wdzlDYW?usp=sharing" target="_blank" rel="noopener" data-hint="Dysk wymaga poproszenia o dostęp">Pobieranie filmów</a>
-        <span class="label-line"></span>
+        <span class="label-line" aria-hidden="true"></span>
+        <a class="label-text label-link" href="https://drive.google.com/drive/folders/1pQmbtr6OxSjRZ9QuECT4Y2iY_wdzlDYW?usp=sharing" target="_blank" rel="noopener noreferrer" data-hint="Dysk wymaga poproszenia o dostęp">Pobieranie filmów</a>
+        <span class="label-line" aria-hidden="true"></span>
       </div>
 
       <div class="cards-grid">
-        <a class="drive-card" href="https://drive.google.com/drive/folders/1pQmbtr6OxSjRZ9QuECT4Y2iY_wdzlDYW?usp=sharing" target="_blank" rel="noopener" data-hint="Dysk wymaga poproszenia o dostęp">
+        <a class="drive-card" href="https://drive.google.com/drive/folders/1pQmbtr6OxSjRZ9QuECT4Y2iY_wdzlDYW?usp=sharing" target="_blank" rel="noopener noreferrer" data-hint="Dysk wymaga poproszenia o dostęp">
           <div class="card-icon"><img src="gdrive.svg" alt="Google Drive" class="drive-icon-large" /></div>
-          <h3 class="drive-title">Dysk Google</h3>
+          <h2 class="drive-title">Dysk Google</h2>
           <p class="drive-desc">Folder z omawianymi filmami</p>
         </a>
       </div>
     </section>
 
-    <section class="archive-section">
+    <section class="archive-section" aria-label="Archiwum spotkań i ranking">
       <div class="section-label section-label--archive-toggle">
-        <span class="label-line"></span>
+        <span class="label-line" aria-hidden="true"></span>
         <div class="archive-toggle" role="tablist" aria-label="Widok poprzednich spotkań">
-          <button type="button" class="archive-toggle-option is-selected" id="toggle-meetings" role="tab" aria-selected="true" aria-controls="meetings-view" data-hint="Kliknij ponownie, aby skopiować listę spotkań">Spotkania</button>
+          <button type="button" class="archive-toggle-option is-selected" id="toggle-meetings" role="tab" aria-selected="true" aria-controls="meetings-view" data-hint="Skopiuj listę poprzednich spotkań">Spotkania</button>
           <span class="archive-toggle-divider" aria-hidden="true">|</span>
-          <button type="button" class="archive-toggle-option" id="toggle-ranking" role="tab" aria-selected="false" aria-controls="ranking-view" data-hint="Przełącz na ranking">&nbsp;Ranking</button>
+          <button type="button" class="archive-toggle-option" id="toggle-ranking" role="tab" aria-selected="false" aria-controls="ranking-view" data-hint="Przełącz na ranking">Ranking</button>
         </div>
-        <span class="label-line"></span>
+        <span class="label-line" aria-hidden="true"></span>
       </div>
 
       <div class="archive-view archive-view--meetings" id="meetings-view" role="tabpanel" aria-labelledby="toggle-meetings">
         <div class="filters" id="filters">
+          <div class="filter-top-row">
+            <div class="filter-search-wrap">
+              <svg class="filter-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="search" id="filter-search" class="filter-search-input" placeholder="Szukaj filmu…" autocomplete="off" spellcheck="false" aria-label="Szukaj filmu po tytule" />
+              <button type="button" id="filter-search-clear" class="filter-search-clear hidden" aria-label="Wyczyść wyszukiwanie">×</button>
+            </div>
+            <div class="filter-meta" id="filter-meta">
+              <span class="filter-count" id="filter-count"></span>
+              <button type="button" class="filter-reset-btn hidden" id="filter-reset-btn">Wyczyść filtry</button>
+            </div>
+          </div>
+
           <div class="filter-group">
             <span class="filter-label">Kraje</span>
             <div class="filter-countries" id="filter-countries"></div>
@@ -83,8 +105,8 @@
             <div class="year-slider" id="year-slider">
               <div class="year-track">
                 <div class="year-range" id="year-range"></div>
-                <input type="range" id="year-min" class="year-input" />
-                <input type="range" id="year-max" class="year-input" />
+                <input type="range" id="year-min" class="year-input" aria-label="Rok produkcji od" />
+                <input type="range" id="year-max" class="year-input" aria-label="Rok produkcji do" />
               </div>
               <div class="year-values">
                 <span id="year-min-val">—</span>
@@ -112,7 +134,7 @@
         <div class="poster-grid hidden" id="archive-poster-grid"></div>
 
         <div class="empty-state hidden" id="archive-empty">
-          <p>Brak omówionych filmów.</p>
+          <p id="archive-empty-text">Brak omówionych filmów.</p>
         </div>
       </div>
 
@@ -121,6 +143,7 @@
           <button type="button" class="ranking-copy-btn" id="ranking-copy-btn" data-hint="Skopiuj listę filmów w rankingu">Skopiuj ranking</button>
           <button type="button" class="ranking-copy-btn ranking-code-btn" id="ranking-code-btn" data-hint="Skopiuj kod do przywracania rankingu">Skopiuj kod</button>
           <button type="button" class="ranking-copy-btn ranking-restore-btn" id="ranking-restore-btn" data-hint="Odtwórz ranking z kodu">Wczytaj z kodu</button>
+          <button type="button" class="ranking-copy-btn ranking-reset-btn hidden" id="ranking-reset-btn" data-hint="Przywróć domyślną kolejność">Resetuj</button>
         </div>
 
         <ul class="archive-list ranking-list" id="ranking-list"></ul>
@@ -131,6 +154,19 @@
       </div>
     </section>
   </main>
+
+  <div class="modal-backdrop hidden" id="restore-modal" role="dialog" aria-modal="true" aria-labelledby="restore-modal-title">
+    <div class="modal-dialog">
+      <h2 class="modal-title" id="restore-modal-title">Wczytaj ranking z kodu</h2>
+      <p class="modal-desc">Wklej sam kod albo cały skopiowany ranking (np. <code>Ranking DKF {kod}:</code>).</p>
+      <textarea id="restore-code-input" class="modal-input" rows="3" placeholder="Wklej kod tutaj…" autocomplete="off" spellcheck="false" aria-label="Kod rankingu"></textarea>
+      <p class="modal-error hidden" id="restore-modal-error" role="alert"></p>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn modal-btn--ghost" id="restore-modal-cancel">Anuluj</button>
+        <button type="button" class="modal-btn modal-btn--primary" id="restore-modal-confirm">Wczytaj</button>
+      </div>
+    </div>
+  </div>
 
   <script src="movies.js"></script>
   <script src="script.js"></script>
