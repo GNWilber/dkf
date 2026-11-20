@@ -17,7 +17,7 @@
 
 const ANNOUNCEMENT = "";
 const ANNOUNCEMENT_EXPIRY = "";
-const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1573484864164991146/image.png?ex=6b022d79&is=6b00dbf9&hm=bab53d9ecb21c46ef5003465e494132adbb29a88e4eecf407bcbd7a2ef7d1baf&animated=true";
+const BANNER = "https://s.twojahistoria.pl/uploads/2018/02/Ko%C5%84ski-zad-fot.-Capri23auto-lic.-CC0.jpg";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/ (używane przez bota Discord)
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
