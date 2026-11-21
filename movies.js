@@ -1,7 +1,7 @@
 // DANE FILMÓW — edytuj tutaj, aby dodać lub usunąć filmy. FORMAT DATY: DD.MM.YYYY
 // Pole `id` gwarantuje stałość kodów rankingu — dla każdego nowego filmu wpisz kolejną wolną liczbę
 // (obecnie następne wolne: 48). Jeśli je pominiesz, strona przypisze je automatycznie.
-// Pole `romaji` jest opcjonalne (np. czytelny zapis tytułu japońskiego obok kanji/kany).
+// Pole `romaji` jest opcjonalne (czytelny zapis alfabetem łacińskim dla tytułów japońskich, koreańskich, cyrylicy itp.).
 // {
 //   id: 48,
 //   name: "",
@@ -326,6 +326,7 @@ const MOVIES = [
   {
     id: 24,
     name: "Возвращение",
+    romaji: "Vozvrashcheniye",
     altName: "Powrót",
     year: 2003,
     filmweb: "https://www.filmweb.pl/film/Powr%C3%B3t-2003-107697",
@@ -574,6 +575,7 @@ const MOVIES = [
   {
     id: 47,
     name: "기생충",
+    romaji: "Gisaengchung",
     altName: "Parasite",
     year: 2019,
     filmweb: "https://www.filmweb.pl/film/Parasite-2019-798143",
