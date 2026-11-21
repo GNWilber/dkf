@@ -17,7 +17,7 @@
 
 const ANNOUNCEMENT = "";
 const ANNOUNCEMENT_EXPIRY = "";
-const BANNER = "https://i.imgur.com/fgTZt8L.png";
+const BANNER = "https://i.imgur.com/uCMXPbg.png";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/ (używane przez bota Discord)
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
