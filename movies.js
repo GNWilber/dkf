@@ -1,9 +1,9 @@
 // DANE FILMÓW — edytuj tutaj, aby dodać lub usunąć filmy. FORMAT DATY: DD.MM.YYYY
 // Pole `id` gwarantuje stałość kodów rankingu — dla każdego nowego filmu wpisz kolejną wolną liczbę
-// (obecnie następne wolne: 48). Jeśli je pominiesz, strona przypisze je automatycznie.
+// (obecnie następne wolne: 53). Jeśli je pominiesz, strona przypisze je automatycznie.
 // Pole `romaji` jest opcjonalne (czytelny zapis alfabetem łacińskim dla tytułów japońskich, koreańskich, cyrylicy itp.).
 // {
-//   id: 48,
+//   id: 53,
 //   name: "",
 //   romaji: "",
 //   altName: "",
@@ -17,7 +17,7 @@
 
 const ANNOUNCEMENT = "";
 const ANNOUNCEMENT_EXPIRY = "";
-const BANNER = "https://i.imgur.com/uCMXPbg.png";
+const BANNER = "https://cdn.discordapp.com/attachments/1447411841562181652/1575958822567149629/image.png?ex=6b0b2d87&is=6b09dc07&hm=64a605908ad9aea56e3e016c311ce60a2ba6fe8f8e7c1096484109adf22a0f0e&animated=true";
 // Banner normal URL: https://github.com/GNWilber/websites/blob/main/dkf/ (używane przez bota Discord)
 
 // Lista krajów używanych do filtrowania (emoji → nazwa). Tylko te się wyświetlą.
@@ -54,7 +54,8 @@ const COUNTRIES = {
   "🇬🇷": "Grecja",
   "🇭🇺": "Węgry",
   "🇮🇪": "Irlandia",
-  "🇳🇿": "Nowa Zelandia"
+  "🇳🇿": "Nowa Zelandia",
+  "🇭🇰": "Hongkong"
 };
 
 const MOVIES = [
@@ -583,6 +584,61 @@ const MOVIES = [
     flag: "🇰🇷",
     author: "@Nicramus",
     poster: "https://image.tmdb.org/t/p/original/jjHccoFjbqlfr4VGLVLT7yek0Xn.jpg"
+  },
+  {
+    id: 48,
+    name: "Macario",
+    year: 1960,
+    filmweb: "https://www.filmweb.pl/film/Macario-1960-233924",
+    date: "11.12.2026",
+    flag: "🇲🇽",
+    author: "@Ada",
+    poster: "https://image.tmdb.org/t/p/original/xX9JGtsnXQAR7e1fWkr7zBuQUHN.jpg"
+  },
+  {
+    id: 49,
+    name: "You Can See Everything",
+    altName: "Zobaczysz wszystko",
+    year: 2026,
+    filmweb: "https://www.filmweb.pl/film/Zobaczysz+wszystko-2026-10133825",
+    date: "18.12.2026",
+    flag: "🇺🇸",
+    author: "@Kornel",
+    poster: "https://image.tmdb.org/t/p/original/mVh3qkw2NUFxWWyF0G1hg2Wh0K5.jpg"
+  },
+  {
+    id: 50,
+    name: "Róża",
+    year: 2011,
+    filmweb: "https://www.filmweb.pl/film/R%C3%B3%C5%BCa-2011-564694",
+    date: "25.12.2026",
+    flag: "🇵🇱",
+    author: "@Hiszpan",
+    poster: "https://image.tmdb.org/t/p/original/vBdcN24IIqkhrjp8FTKNUipnokt.jpg"
+  },
+  {
+    id: 51,
+    name: "世外",
+    romaji: "Sai ngoi",
+    altName: "Międzyświat",
+    year: 2025,
+    filmweb: "https://www.filmweb.pl/film/Mi%C4%99dzy%C5%9Bwiat-2025-10112649",
+    date: "01.01.2027",
+    flag: "🇭🇰",
+    author: "@Damian",
+    poster: "https://image.tmdb.org/t/p/original/gHCe5fnfeO3Ae7rH8mjtICHXI5B.jpg"
+  },
+  {
+    id: 52,
+    name: "버닝",
+    romaji: "Beoning",
+    altName: "Płomienie",
+    year: 2018,
+    filmweb: "https://www.filmweb.pl/film/P%C5%82omienie-2018-784582",
+    date: "08.01.2027",
+    flag: "🇰🇷 🇯🇵",
+    author: "@Muzg",
+    poster: "https://image.tmdb.org/t/p/original/rKJfIDa5qEOLaHrx2tgptoLVR9l.jpg"
   }
 ];
 
